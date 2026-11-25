@@ -12,16 +12,16 @@ modded class SCR_PlayerController{
 	static const string HMD_ACTION_MENU = "CSWG_HMD_Menu";
 	static const string HMD_ACTION_NEXT = "CSWG_HMD_Next";
 	static const string HMD_ACTION_PREV = "CSWG_HMD_Prev";
-	static const bool HDTS_REQUIRE_HELMET = true;
-	static const float HDTS_HINT_SECONDS = 4;
+	static const bool HMD_REQUIRE_HELMET = true;
+	static const float HMD_HINT_SECONDS = 4;
 
-	ref HMD_Symbology m_HDTS;
+	ref HMD_Symbology ref_HMDsymbology;
 	ref HMD_FuelComputer ref_FuelComputer;
 	bool HMD_FuelComputerInitaliced = false;
-	bool m_bHDTS_Enabled = true;
-	bool m_bHDTS_InputReady;
-	int m_iHDTS_Brightness = 2;
-	string m_sHDTS_NavSelection;
+	bool HMD_Enabled = true;
+	bool HMD_InputReady;
+	int HMD_Brightness = 2;
+	string HMD_NavSelection;
 
 	override protected void OnInit(IEntity owner){
 		super.OnInit(owner);
@@ -51,39 +51,39 @@ modded class SCR_PlayerController{
 		}
 
 		HMD_InitInput();
-		if (m_bHDTS_InputReady)
+		if (HMD_InputReady)
 			GetGame().GetInputManager().ActivateContext(HMD_CONTEXT);
 
-		bool show = m_bHDTS_Enabled && (!HDTS_REQUIRE_HELMET || HMD_HasHelmet(character));
+		bool show = HMD_Enabled && (!HMD_REQUIRE_HELMET || HMD_HasHelmet(character));
 		if (!show){
 			HMD_DestroyDisplay();
 			return;
 		}
 
-		if (!m_HDTS){
-			m_HDTS = new HMD_Symbology();
-			if (!m_HDTS.IsValid()){
-				m_HDTS = null;
+		if (!ref_HMDsymbology){
+			ref_HMDsymbology = new HMD_Symbology();
+			if (!ref_HMDsymbology.IsValid()){
+				ref_HMDsymbology = null;
 				return;
 			}
 
-			m_HDTS.SetBrightness(m_iHDTS_Brightness);
-			m_HDTS.SetNavSelection(m_sHDTS_NavSelection);
+			ref_HMDsymbology.SetBrightness(HMD_Brightness);
+			ref_HMDsymbology.SetNavSelection(HMD_NavSelection);
 		}
 		if(!HMD_FuelComputerInitaliced){
 			ref_FuelComputer = new HMD_FuelComputer(vehicle);
 			HMD_FuelComputerInitaliced = true;
 		}
 
-		m_HDTS.Update(vehicle, sim, timeSlice, ref_FuelComputer);
+		ref_HMDsymbology.Update(vehicle, sim, timeSlice, ref_FuelComputer);
 	}
 
 	void HMD_DestroyDisplay(){
-		if (!m_HDTS)
+		if (!ref_HMDsymbology)
 			return;
 
-		m_HDTS.Destroy();
-		m_HDTS = null;
+		ref_HMDsymbology.Destroy();
+		ref_HMDsymbology = null;
 	}
 
 	bool HMD_FindAircraft(out IEntity vehicle, out VehicleHelicopterSimulation sim, out IEntity character){
@@ -119,7 +119,7 @@ modded class SCR_PlayerController{
 	}
 
 	void HMD_InitInput(){
-		if (m_bHDTS_InputReady)
+		if (HMD_InputReady)
 			return;
 
 		InputManager inputManager = GetGame().GetInputManager();
@@ -129,7 +129,7 @@ modded class SCR_PlayerController{
 		inputManager.AddActionListener(HMD_ACTION_MENU, EActionTrigger.DOWN, HMD_OnMenu);
 		inputManager.AddActionListener(HMD_ACTION_NEXT, EActionTrigger.DOWN, HMD_OnNext);
 		inputManager.AddActionListener(HMD_ACTION_PREV, EActionTrigger.DOWN, HMD_OnPrev);
-		m_bHDTS_InputReady = true;
+		HMD_InputReady = true;
 	}
 
 	void HMD_OnMenu(){
@@ -145,6 +145,6 @@ modded class SCR_PlayerController{
 	}
 
 	void HDTS_Hint(string text, string title){
-		SCR_HintManagerComponent.ShowCustomHint(text, title, HDTS_HINT_SECONDS);
+		SCR_HintManagerComponent.ShowCustomHint(text, title, HMD_HINT_SECONDS);
 	}
 }
