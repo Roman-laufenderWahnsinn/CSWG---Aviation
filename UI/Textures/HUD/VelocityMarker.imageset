@@ -1,0 +1,17 @@
+ImageSetClass {
+ RefSize 136 136
+ Textures {
+  ImageSetTextureClass "{6AF2C9D8A10E7863}" {
+   screenSize FHD
+   size 136 136
+   path "{621A8E584823A7CA}UI/Textures/HUD/VelocityMarker-100_atlas.edds"
+  }
+ }
+ Images {
+  ImageSetDefClass VelocityMarker {
+   Pos 2 2
+   Size 128 128
+   Flags 0 0
+  }
+ }
+}

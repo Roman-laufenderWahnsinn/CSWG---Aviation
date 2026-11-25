@@ -1,2 +1,12 @@
-# Auto detect text files and perform LF normalization
-* text=auto
+* text=auto eol=crlf
+*.c text eol=crlf
+*.conf text eol=crlf
+*.layout text eol=crlf
+*.meta text eol=crlf
+*.gproj text eol=crlf
+
+# Binärdateien explizit als binary markieren
+*.edds binary
+*.ogg binary
+*.wav binary
+*.xob binary

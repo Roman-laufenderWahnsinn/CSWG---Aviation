@@ -1,0 +1,547 @@
+OverlayWidgetClass {
+ Name "root"
+ Clipping False
+ {
+  FrameWidgetClass "{6AE1284C5C07912A}" {
+   Name "Frame"
+   Slot OverlayWidgetSlot "{5752C47600000002}" {
+    HorizontalAlign 3
+    VerticalAlign 3
+   }
+   {
+    ImageWidgetClass "{6AE1284C5C079128}" {
+     Name "Horizon"
+     Slot FrameWidgetSlot "{5752C47600000011}" {
+     }
+     Color 0.35 1 0.45 1
+    }
+    TextWidgetClass "{6AE1284C5C048786}" {
+     Name "Airspeed"
+     Slot FrameWidgetSlot "{5752C47600000043}" {
+     }
+     Color 0.35 1 0.45 1
+     Text "0"
+     "Font Size" 32
+     "Min Font Size" 32
+     "Horizontal Alignment" Center
+     "Vertical Alignment" Center
+     FontProperties FontProperties "{5752C47600000044}" {
+      Font "{EABA4FE9D014CCEF}UI/Fonts/RobotoCondensed/RobotoCondensed_Bold.fnt"
+      ShadowSize 4
+      ShadowColor 0 0 0 0.6
+     }
+    }
+    TextWidgetClass "{6AE1284C5C0522EE}" {
+     Name "AirspeedLabel"
+     Slot FrameWidgetSlot "{5752C47600000046}" {
+     }
+     Color 0.35 1 0.45 1
+     Text "KIAS"
+     "Font Size" 14
+     "Min Font Size" 14
+     "Horizontal Alignment" Center
+     "Vertical Alignment" Center
+     FontProperties FontProperties "{5752C47600000047}" {
+      Font "{EABA4FE9D014CCEF}UI/Fonts/RobotoCondensed/RobotoCondensed_Bold.fnt"
+      ShadowSize 4
+      ShadowColor 0 0 0 0.6
+     }
+    }
+    TextWidgetClass "{6AE1284C5C051448}" {
+     Name "GroundSpeed"
+     Slot FrameWidgetSlot "{5752C47600000049}" {
+     }
+     Color 0.35 1 0.45 1
+     Text "GS 0"
+     "Font Size" 16
+     "Min Font Size" 16
+     "Horizontal Alignment" Center
+     "Vertical Alignment" Center
+     FontProperties FontProperties "{5752C4760000004A}" {
+      Font "{EABA4FE9D014CCEF}UI/Fonts/RobotoCondensed/RobotoCondensed_Bold.fnt"
+      ShadowSize 4
+      ShadowColor 0 0 0 0.6
+     }
+    }
+    TextWidgetClass "{6AE1284C5C05144F}" {
+     Name "Altitude"
+     Slot FrameWidgetSlot "{5752C4760000004C}" {
+     }
+     Color 0.35 1 0.45 1
+     Text "0"
+     "Font Size" 32
+     "Min Font Size" 32
+     "Horizontal Alignment" Center
+     "Vertical Alignment" Center
+     FontProperties FontProperties "{5752C4760000004D}" {
+      Font "{EABA4FE9D014CCEF}UI/Fonts/RobotoCondensed/RobotoCondensed_Bold.fnt"
+      ShadowSize 4
+      ShadowColor 0 0 0 0.6
+     }
+    }
+    TextWidgetClass "{6AE1284C5C05A996}" {
+     Name "AltitudeLabel"
+     Slot FrameWidgetSlot "{5752C4760000004F}" {
+     }
+     Color 0.35 1 0.45 1
+     Text "FT MSL"
+     "Font Size" 14
+     "Min Font Size" 14
+     "Horizontal Alignment" Center
+     "Vertical Alignment" Center
+     FontProperties FontProperties "{5752C47600000050}" {
+      Font "{EABA4FE9D014CCEF}UI/Fonts/RobotoCondensed/RobotoCondensed_Bold.fnt"
+      ShadowSize 4
+      ShadowColor 0 0 0 0.6
+     }
+    }
+    TextWidgetClass "{6AE1284C5C05A997}" {
+     Name "RadarAlt"
+     Slot FrameWidgetSlot "{5752C47600000052}" {
+     }
+     Color 0.35 1 0.45 1
+     Text "R 0"
+     "Font Size" 20
+     "Min Font Size" 20
+     "Horizontal Alignment" Center
+     "Vertical Alignment" Center
+     FontProperties FontProperties "{5752C47600000053}" {
+      Font "{EABA4FE9D014CCEF}UI/Fonts/RobotoCondensed/RobotoCondensed_Bold.fnt"
+      ShadowSize 4
+      ShadowColor 0 0 0 0.6
+     }
+    }
+    TextWidgetClass "{6AE1284C5C05A295}" {
+     Name "VSI"
+     Slot FrameWidgetSlot "{5752C47600000055}" {
+     }
+     Color 0.35 1 0.45 1
+     Text "0 FPM"
+     "Font Size" 16
+     "Min Font Size" 16
+     "Horizontal Alignment" Center
+     "Vertical Alignment" Center
+     FontProperties FontProperties "{5752C47600000056}" {
+      Font "{EABA4FE9D014CCEF}UI/Fonts/RobotoCondensed/RobotoCondensed_Bold.fnt"
+      ShadowSize 4
+      ShadowColor 0 0 0 0.6
+     }
+    }
+    TextWidgetClass "{6AE1284C5C0276D0}" {
+     Name "Heading"
+     Slot FrameWidgetSlot "{5752C47600000058}" {
+     }
+     Color 0.35 1 0.45 1
+     Text "000"
+     "Font Size" 28
+     "Min Font Size" 28
+     "Horizontal Alignment" Center
+     "Vertical Alignment" Center
+     FontProperties FontProperties "{5752C47600000059}" {
+      Font "{EABA4FE9D014CCEF}UI/Fonts/RobotoCondensed/RobotoCondensed_Bold.fnt"
+      ShadowSize 4
+      ShadowColor 0 0 0 0.6
+     }
+    }
+    TextWidgetClass "{6AE1284C5C0276D3}" {
+     Name "HeadingTape"
+     Slot FrameWidgetSlot "{5752C4760000005B}" {
+     }
+     Color 0.35 1 0.45 1
+     Text ""
+     "Font Size" 16
+     "Min Font Size" 16
+     "Horizontal Alignment" Center
+     "Vertical Alignment" Center
+     FontProperties FontProperties "{5752C4760000005C}" {
+      Font "{EABA4FE9D014CCEF}UI/Fonts/RobotoCondensed/RobotoCondensed_Bold.fnt"
+      ShadowSize 4
+      ShadowColor 0 0 0 0.6
+     }
+    }
+    TextWidgetClass "{6AE1284C5C022DC4}" {
+     Name "Rotor"
+     Slot FrameWidgetSlot "{5752C4760000005E}" {
+     }
+     Color 0.35 1 0.45 1
+     Text "NR 0%"
+     "Font Size" 20
+     "Min Font Size" 20
+     "Horizontal Alignment" Center
+     "Vertical Alignment" Center
+     FontProperties FontProperties "{5752C4760000005F}" {
+      Font "{EABA4FE9D014CCEF}UI/Fonts/RobotoCondensed/RobotoCondensed_Bold.fnt"
+      ShadowSize 4
+      ShadowColor 0 0 0 0.6
+     }
+    }
+    TextWidgetClass "{6AE1284C5C022DC5}" {
+     Name "Fuel"
+     Slot FrameWidgetSlot "{5752C47600000061}" {
+     }
+     Color 0.35 1 0.45 1
+     Text "FUEL --"
+     "Font Size" 16
+     "Min Font Size" 16
+     "Horizontal Alignment" Center
+     "Vertical Alignment" Center
+     FontProperties FontProperties "{5752C47600000062}" {
+      Font "{EABA4FE9D014CCEF}UI/Fonts/RobotoCondensed/RobotoCondensed_Bold.fnt"
+      ShadowSize 4
+      ShadowColor 0 0 0 0.6
+     }
+    }
+    TextWidgetClass "{6AE1284C5C02FFBA}" {
+     Name "GForce"
+     Slot FrameWidgetSlot "{5752C47600000064}" {
+     }
+     Color 0.35 1 0.45 1
+     Text "1.0 G"
+     "Font Size" 16
+     "Min Font Size" 16
+     "Horizontal Alignment" Center
+     "Vertical Alignment" Center
+     FontProperties FontProperties "{5752C47600000065}" {
+      Font "{EABA4FE9D014CCEF}UI/Fonts/RobotoCondensed/RobotoCondensed_Bold.fnt"
+      ShadowSize 4
+      ShadowColor 0 0 0 0.6
+     }
+    }
+    TextWidgetClass "{6AE1284C5C034745}" {
+     Name "Warning"
+     Slot FrameWidgetSlot "{5752C4760000006D}" {
+     }
+     Color 1 0.72 0.24 1
+     Text ""
+     "Font Size" 26
+     "Min Font Size" 26
+     "Horizontal Alignment" Center
+     "Vertical Alignment" Center
+     FontProperties FontProperties "{5752C4760000006E}" {
+      Font "{EABA4FE9D014CCEF}UI/Fonts/RobotoCondensed/RobotoCondensed_Bold.fnt"
+      ShadowSize 4
+      ShadowColor 0 0 0 0.6
+     }
+    }
+    ImageWidgetClass "{6AE1284C5C03D231}" {
+     Name "Target0"
+     Slot FrameWidgetSlot "{5752C47600000081}" {
+     }
+     Color 0.35 1 0.45 1
+    }
+    TextWidgetClass "{6AE1284C5C03A57E}" {
+     Name "TargetLabel0"
+     Slot FrameWidgetSlot "{5752C47600000083}" {
+     }
+     Color 0.35 1 0.45 1
+     Text ""
+     "Font Size" 16
+     "Min Font Size" 16
+     "Horizontal Alignment" Left
+     "Vertical Alignment" Center
+     FontProperties FontProperties "{5752C47600000084}" {
+      Font "{EABA4FE9D014CCEF}UI/Fonts/RobotoCondensed/RobotoCondensed_Bold.fnt"
+      ShadowSize 4
+      ShadowColor 0 0 0 0.6
+     }
+    }
+    ImageWidgetClass "{6AE1284C5C03A57D}" {
+     Name "Target1"
+     Slot FrameWidgetSlot "{5752C47600000086}" {
+     }
+     Color 0.35 1 0.45 1
+    }
+    TextWidgetClass "{6AE1284C5C038E5F}" {
+     Name "TargetLabel1"
+     Slot FrameWidgetSlot "{5752C47600000088}" {
+     }
+     Color 0.35 1 0.45 1
+     Text ""
+     "Font Size" 16
+     "Min Font Size" 16
+     "Horizontal Alignment" Left
+     "Vertical Alignment" Center
+     FontProperties FontProperties "{5752C47600000089}" {
+      Font "{EABA4FE9D014CCEF}UI/Fonts/RobotoCondensed/RobotoCondensed_Bold.fnt"
+      ShadowSize 4
+      ShadowColor 0 0 0 0.6
+     }
+    }
+    ImageWidgetClass "{6AE1284C5C004E09}" {
+     Name "Target2"
+     Slot FrameWidgetSlot "{5752C4760000008B}" {
+     }
+     Color 0.35 1 0.45 1
+    }
+    TextWidgetClass "{6AE1284C5C004E08}" {
+     Name "TargetLabel2"
+     Slot FrameWidgetSlot "{5752C4760000008D}" {
+     }
+     Color 0.35 1 0.45 1
+     Text ""
+     "Font Size" 16
+     "Min Font Size" 16
+     "Horizontal Alignment" Left
+     "Vertical Alignment" Center
+     FontProperties FontProperties "{5752C4760000008E}" {
+      Font "{EABA4FE9D014CCEF}UI/Fonts/RobotoCondensed/RobotoCondensed_Bold.fnt"
+      ShadowSize 4
+      ShadowColor 0 0 0 0.6
+     }
+    }
+    ImageWidgetClass "{6AE1284C5C00D77D}" {
+     Name "Target3"
+     Slot FrameWidgetSlot "{5752C47600000090}" {
+     }
+     Color 0.35 1 0.45 1
+    }
+    TextWidgetClass "{6AE1284C5C00D77A}" {
+     Name "TargetLabel3"
+     Slot FrameWidgetSlot "{5752C47600000092}" {
+     }
+     Color 0.35 1 0.45 1
+     Text ""
+     "Font Size" 16
+     "Min Font Size" 16
+     "Horizontal Alignment" Left
+     "Vertical Alignment" Center
+     FontProperties FontProperties "{5752C47600000093}" {
+      Font "{EABA4FE9D014CCEF}UI/Fonts/RobotoCondensed/RobotoCondensed_Bold.fnt"
+      ShadowSize 4
+      ShadowColor 0 0 0 0.6
+     }
+    }
+    TextWidgetClass "{6AE1284C5C0087BE}" {
+     Name "TargetLine"
+     Slot FrameWidgetSlot "{5752C47600000095}" {
+     }
+     Color 0.35 1 0.45 1
+     Text ""
+     "Font Size" 18
+     "Min Font Size" 18
+     "Horizontal Alignment" Center
+     "Vertical Alignment" Center
+     FontProperties FontProperties "{5752C47600000096}" {
+      Font "{EABA4FE9D014CCEF}UI/Fonts/RobotoCondensed/RobotoCondensed_Bold.fnt"
+      ShadowSize 4
+      ShadowColor 0 0 0 0.6
+     }
+    }
+    ImageWidgetClass "{6AE1284C5C0087BF}" {
+     Name "Target4"
+     Slot FrameWidgetSlot "{5752C476000000A1}" {
+     }
+     Color 0.35 1 0.45 1
+    }
+    TextWidgetClass "{6AE1284C5C014361}" {
+     Name "TargetLabel4"
+     Slot FrameWidgetSlot "{5752C476000000A3}" {
+     }
+     Color 0.35 1 0.45 1
+     Text ""
+     "Font Size" 16
+     "Min Font Size" 16
+     "Horizontal Alignment" Left
+     "Vertical Alignment" Center
+     FontProperties FontProperties "{5752C476000000A4}" {
+      Font "{EABA4FE9D014CCEF}UI/Fonts/RobotoCondensed/RobotoCondensed_Bold.fnt"
+      ShadowSize 4
+      ShadowColor 0 0 0 0.6
+     }
+    }
+    ImageWidgetClass "{6AE1284C5C014362}" {
+     Name "Target5"
+     Slot FrameWidgetSlot "{5752C476000000A6}" {
+     }
+     Color 0.35 1 0.45 1
+    }
+    TextWidgetClass "{6AE1284C5C010BB0}" {
+     Name "TargetLabel5"
+     Slot FrameWidgetSlot "{5752C476000000A8}" {
+     }
+     Color 0.35 1 0.45 1
+     Text ""
+     "Font Size" 16
+     "Min Font Size" 16
+     "Horizontal Alignment" Left
+     "Vertical Alignment" Center
+     FontProperties FontProperties "{5752C476000000A9}" {
+      Font "{EABA4FE9D014CCEF}UI/Fonts/RobotoCondensed/RobotoCondensed_Bold.fnt"
+      ShadowSize 4
+      ShadowColor 0 0 0 0.6
+     }
+    }
+    ImageWidgetClass "{6AE1284C5C010BB1}" {
+     Name "Target6"
+     Slot FrameWidgetSlot "{5752C476000000AB}" {
+     }
+     Color 0.35 1 0.45 1
+    }
+    TextWidgetClass "{6AE1284C5C01BB80}" {
+     Name "TargetLabel6"
+     Slot FrameWidgetSlot "{5752C476000000AD}" {
+     }
+     Color 0.35 1 0.45 1
+     Text ""
+     "Font Size" 16
+     "Min Font Size" 16
+     "Horizontal Alignment" Left
+     "Vertical Alignment" Center
+     FontProperties FontProperties "{5752C476000000AE}" {
+      Font "{EABA4FE9D014CCEF}UI/Fonts/RobotoCondensed/RobotoCondensed_Bold.fnt"
+      ShadowSize 4
+      ShadowColor 0 0 0 0.6
+     }
+    }
+    ImageWidgetClass "{6AE1284C5C1E78C2}" {
+     Name "Target7"
+     Slot FrameWidgetSlot "{5752C476000000B0}" {
+     }
+     Color 0.35 1 0.45 1
+    }
+    TextWidgetClass "{6AE1284C5C1E78CD}" {
+     Name "TargetLabel7"
+     Slot FrameWidgetSlot "{5752C476000000B2}" {
+     }
+     Color 0.35 1 0.45 1
+     Text ""
+     "Font Size" 16
+     "Min Font Size" 16
+     "Horizontal Alignment" Left
+     "Vertical Alignment" Center
+     FontProperties FontProperties "{5752C476000000B3}" {
+      Font "{EABA4FE9D014CCEF}UI/Fonts/RobotoCondensed/RobotoCondensed_Bold.fnt"
+      ShadowSize 4
+      ShadowColor 0 0 0 0.6
+     }
+    }
+    ImageWidgetClass "{6AE1284C5C1E4A59}" {
+     Name "Target8"
+     Slot FrameWidgetSlot "{5752C476000000B5}" {
+     }
+     Color 0.35 1 0.45 1
+    }
+    TextWidgetClass "{6AE1284C5C1E4A58}" {
+     Name "TargetLabel8"
+     Slot FrameWidgetSlot "{5752C476000000B7}" {
+     }
+     Color 0.35 1 0.45 1
+     Text ""
+     "Font Size" 16
+     "Min Font Size" 16
+     "Horizontal Alignment" Left
+     "Vertical Alignment" Center
+     FontProperties FontProperties "{5752C476000000B8}" {
+      Font "{EABA4FE9D014CCEF}UI/Fonts/RobotoCondensed/RobotoCondensed_Bold.fnt"
+      ShadowSize 4
+      ShadowColor 0 0 0 0.6
+     }
+    }
+    ImageWidgetClass "{6AE1284C5C1E43CD}" {
+     Name "Target9"
+     Slot FrameWidgetSlot "{5752C476000000BA}" {
+     }
+     Color 0.35 1 0.45 1
+    }
+    TextWidgetClass "{6AE1284C5C1E0212}" {
+     Name "TargetLabel9"
+     Slot FrameWidgetSlot "{5752C476000000BC}" {
+     }
+     Color 0.35 1 0.45 1
+     Text ""
+     "Font Size" 16
+     "Min Font Size" 16
+     "Horizontal Alignment" Left
+     "Vertical Alignment" Center
+     FontProperties FontProperties "{5752C476000000BD}" {
+      Font "{EABA4FE9D014CCEF}UI/Fonts/RobotoCondensed/RobotoCondensed_Bold.fnt"
+      ShadowSize 4
+      ShadowColor 0 0 0 0.6
+     }
+    }
+    ImageWidgetClass "{6AE1284C5C1E0211}" {
+     Name "Target10"
+     Slot FrameWidgetSlot "{5752C476000000BF}" {
+     }
+     Color 0.35 1 0.45 1
+    }
+    TextWidgetClass "{6AE1284C5C1E0210}" {
+     Name "TargetLabel10"
+     Slot FrameWidgetSlot "{5752C476000000C1}" {
+     }
+     Color 0.35 1 0.45 1
+     Text ""
+     "Font Size" 16
+     "Min Font Size" 16
+     "Horizontal Alignment" Left
+     "Vertical Alignment" Center
+     FontProperties FontProperties "{5752C476000000C2}" {
+      Font "{EABA4FE9D014CCEF}UI/Fonts/RobotoCondensed/RobotoCondensed_Bold.fnt"
+      ShadowSize 4
+      ShadowColor 0 0 0 0.6
+     }
+    }
+    ImageWidgetClass "{6AE1284C5C1EB566}" {
+     Name "Target11"
+     Slot FrameWidgetSlot "{5752C476000000C4}" {
+     }
+     Color 0.35 1 0.45 1
+    }
+    TextWidgetClass "{6AE1284C5C1EB561}" {
+     Name "TargetLabel11"
+     Slot FrameWidgetSlot "{5752C476000000C6}" {
+     }
+     Color 0.35 1 0.45 1
+     Text ""
+     "Font Size" 16
+     "Min Font Size" 16
+     "Horizontal Alignment" Left
+     "Vertical Alignment" Center
+     FontProperties FontProperties "{5752C476000000C7}" {
+      Font "{EABA4FE9D014CCEF}UI/Fonts/RobotoCondensed/RobotoCondensed_Bold.fnt"
+      ShadowSize 4
+      ShadowColor 0 0 0 0.6
+     }
+    }
+    TextWidgetClass "{6AE1284C5C1E9A65}" {
+     Name "NavLine"
+     Slot FrameWidgetSlot "{5752C476000000C9}" {
+     }
+     Color 1 0.45 1 1
+     Text ""
+     "Font Size" 18
+     "Min Font Size" 18
+     "Horizontal Alignment" Center
+     "Vertical Alignment" Center
+     FontProperties FontProperties "{5752C476000000CA}" {
+      Font "{EABA4FE9D014CCEF}UI/Fonts/RobotoCondensed/RobotoCondensed_Bold.fnt"
+      ShadowSize 4
+      ShadowColor 0 0 0 0.6
+     }
+    }
+    ImageWidgetClass "{6AF0E5AD6D5C1C91}" {
+     Name "FPVimg"
+     Slot FrameWidgetSlot "{5752C476000000C4}" {
+     }
+     Color 0.35 1 0.45 1
+    }
+    TextWidgetClass "{6AF1106EF6AD19F0}" {
+     Name "FuelTimer"
+     Slot FrameWidgetSlot "{5752C47600000061}" {
+     }
+     Color 0.35 1 0.45 1
+     Text "--"
+     "Font Size" 16
+     "Min Font Size" 16
+     "Horizontal Alignment" Center
+     "Vertical Alignment" Center
+     FontProperties FontProperties "{5752C47600000062}" {
+      Font "{EABA4FE9D014CCEF}UI/Fonts/RobotoCondensed/RobotoCondensed_Bold.fnt"
+      ShadowSize 4
+      ShadowColor 0 0 0 0.6
+     }
+    }
+   }
+  }
+ }
+}

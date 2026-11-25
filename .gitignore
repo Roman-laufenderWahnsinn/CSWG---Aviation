@@ -1,32 +1,9 @@
-# Prerequisites
-*.d
+# Enfusion Workbench / Arma Reforger lokale & generierte Dateien
+.workbench/
+*.log
+*.bak
+*.tmp
+~*
 
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
-
-# Precompiled Headers
-*.gch
-*.pch
-
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
-
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
-# Executables
-*.exe
-*.out
-*.app
+# Lokale User-Configs / Caches
+userSettings.conf

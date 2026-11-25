@@ -1,0 +1,22 @@
+GameProject {
+ ID "CSWG_Aviation"
+ GUID "6AE1284BF155E5C6"
+ TITLE "CSWG - Aviation"
+ Dependencies {
+  "6A49417788E13618" "6A497C56E583A9B2" "6A4A25B3E3203EB1" "6A1502DE87DE7924" "6A621C15B198C1BA" "6AB36D3A8965C7DC" "6A6D7BC482790A79" "6A391ACE98228BA0"
+ }
+ Configurations {
+  GameProjectConfig PC {
+  }
+  GameProjectConfig XBOX_ONE {
+  }
+  GameProjectConfig XBOX_SERIES {
+  }
+  GameProjectConfig PS4 {
+  }
+  GameProjectConfig PS5 {
+  }
+  GameProjectConfig HEADLESS {
+  }
+ }
+}
