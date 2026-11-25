@@ -145,18 +145,23 @@ modded class SCR_PlayerController{
 	void HMD_OnMenu(){
 		HMD_selectedOption = (HMD_selectedOption + 1) % 2;
 		if(HMD_selectedOption == CSWG_HMD_Mode.NAV){
-			HDTS_Hint("Naviagation Mode\nWIP", "HMD");
+			HMD_Hint("Naviagation Mode\nNUM1 <not used>\nNUM3 next Nav", "HMD");
 			ref_HMDsymbology.SetOptionModeInfo("");
 			return;
 		}
 		if(HMD_selectedOption == CSWG_HMD_Mode.DIM){
-			HDTS_Hint("Dimming Mode\nNUM1 dimmer/disable HUD\nNUM3 brighter HUD", "HMD");
+			HMD_Hint("Dimming Mode\nNUM1 dimmer/disable HUD\nNUM3 brighter HUD", "HMD");
 			ref_HMDsymbology.SetOptionModeInfo("dimming");
 			return;
 		}
 	}
 
 	void HMD_OnNext(){
+		if(HMD_selectedOption == CSWG_HMD_Mode.NAV){
+			ref_HMDsymbology.CycleNav();
+			HMD_Hint(ref_HMDsymbology.navSelectionText, "NAV");
+			return;
+		}
 		if(HMD_selectedOption == CSWG_HMD_Mode.DIM){
 			HMD_Brightness++;
 			if(HMD_Brightness > 10){
@@ -180,7 +185,7 @@ modded class SCR_PlayerController{
 		}
 	}
 
-	void HDTS_Hint(string text, string title){
+	void HMD_Hint(string text, string title){
 		SCR_HintManagerComponent.ShowCustomHint(text, title, HMD_HINT_SECONDS);
 	}
 }

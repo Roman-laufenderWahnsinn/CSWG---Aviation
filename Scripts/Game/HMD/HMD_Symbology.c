@@ -154,6 +154,7 @@ class HMD_Symbology : Managed
 		if (count == 0){
 			navSelection = string.Empty;
 			navSelectionText = "NAV: AUTO (no waypoints or markers in view)";
+			Print(navSelectionText);
 			return navSelection;
 		}
 
@@ -167,32 +168,13 @@ class HMD_Symbology : Managed
 		if (next >= count){
 			navSelection = string.Empty;
 			navSelectionText = "NAV: AUTO";
+			Print(navSelectionText);
 			return navSelection;
 		}
 
 		navSelection = navKeysArray[next];
 		navSelectionText = "NAV: " + navSelection;
-
-		return navSelection;
-	}
-	
-	string CycleNavPrev(){
-		int count = navKeysArray.Count();
-		if (count == 0){
-			navSelection = string.Empty;
-			navSelectionText = "NAV: AUTO (no waypoints or markers in view)";
-			return navSelection;
-		}
-
-		int prev = 0;
-		if (!navSelection.IsEmpty()){
-			int current = navKeysArray.Find(navSelection);
-			if (current >= 0)
-				prev = current - 1;
-		}
-
-		navSelection = navKeysArray[prev];
-		navSelectionText = "NAV: " + navSelection;
+		Print(navSelectionText);
 
 		return navSelection;
 	}
