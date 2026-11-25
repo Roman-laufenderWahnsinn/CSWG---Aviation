@@ -97,10 +97,11 @@ class HMD_Symbology : Managed
 	float screenCenterX;
 	float screenCenterY;
 
-	int brightessHMD = 2;
+	int brightessHMD = 10;
 	float blinkClockCounter;
 	bool layoutIsDirty = true;
 	WorldTimestamp lastTimestampFuelUpdate;
+	string optionMode = "";
 
 	void HMD_Symbology(){
 		WorkspaceWidget workspace = GetGame().GetWorkspace();
@@ -205,13 +206,7 @@ class HMD_Symbology : Managed
 		if (!wingetRoot)
 			return;
 
-		float opacity = 0.45;
-		if (brightessHMD == 1)
-			opacity = 0.7;
-		else if (brightessHMD == 2)
-			opacity = 1.0;
-
-		wingetRoot.SetOpacity(opacity);
+		wingetRoot.SetOpacity(brightessHMD/10.0);
 	}
 
 	void CacheWidgets(){
@@ -450,6 +445,9 @@ class HMD_Symbology : Managed
 		if (fuelPct >= 0 && fuelPct < LOW_FUEL_PCT)
 			return "LOW FUEL";
 	
+		if(optionMode != "")
+			return optionMode;
+		
 		return string.Empty;
 	}
 
@@ -860,5 +858,9 @@ class HMD_Symbology : Managed
 
 		int index = Math.Floor((normalized + 22.5) / 45.0);
 		return DIRS[index % 8];
+	}
+	
+	void SetOptionModeInfo(string optionModeNew){
+		optionMode = optionModeNew;
 	}
 }

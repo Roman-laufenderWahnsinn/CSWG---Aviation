@@ -38,6 +38,6 @@ GenericEntity : "{7FA7B446CC6200C7}Prefabs/Items/Equipment/Patches/Kagwerks_01.e
  coords 6111.92 157.609 6279.387
 }
 Vehicle MH6_Black_Bench1 : "{96757B0A8AC345BB}Prefabs/Vehicles/Helicopters/MH6/Black/MH6_Black_Bench.et" {
- coords 6108.68 157.352 6279.521
+ coords 6108.68 157.699 6279.521
  angles 0 0 0
 }

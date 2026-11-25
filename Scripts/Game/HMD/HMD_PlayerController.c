@@ -4,8 +4,13 @@ Autohor: Roman Alexander "Trojan" Löwe
 This is on adjusted version form the original "HDTS - Helmet Display" Mod on stem workshop:
 https://reforger.armaplatform.com/workshop/7BABD785CD00B3F6-HDTS-HelmetDisplay
 
-- Changed keybinds
+- Changed keybinds (to stay compatible with ACM) and reduced to 3
 */
+
+enum CSWG_HMD_Mode{
+	NAV, // 0, standart
+	DIM  // 1
+}
 
 modded class SCR_PlayerController{
 	static const string HMD_CONTEXT = "CSWG_HMD_Context";
@@ -14,14 +19,19 @@ modded class SCR_PlayerController{
 	static const string HMD_ACTION_OPTION = "CSWG_HMD_Option";
 	static const bool HMD_REQUIRE_HELMET = true;
 	static const float HMD_HINT_SECONDS = 4;
+	
+	
+	
 
 	ref HMD_Symbology ref_HMDsymbology;
 	ref HMD_FuelComputer ref_FuelComputer;
 	bool HMD_FuelComputerInitaliced = false;
 	bool HMD_Enabled = true;
 	bool HMD_InputReady;
-	int HMD_Brightness = 2;
+	int HMD_Brightness = 10;
 	string HMD_NavSelection;
+	int HMD_selectedOption = 0;
+	
 
 	override protected void OnInit(IEntity owner){
 		super.OnInit(owner);
@@ -133,15 +143,41 @@ modded class SCR_PlayerController{
 	}
 
 	void HMD_OnMenu(){
-		HDTS_Hint("HMD_OnMenu ", "HMD");
+		HMD_selectedOption = (HMD_selectedOption + 1) % 2;
+		if(HMD_selectedOption == CSWG_HMD_Mode.NAV){
+			HDTS_Hint("Naviagation Mode\nWIP", "HMD");
+			ref_HMDsymbology.SetOptionModeInfo("");
+			return;
+		}
+		if(HMD_selectedOption == CSWG_HMD_Mode.DIM){
+			HDTS_Hint("Dimming Mode\nNUM1 dimmer/disable HUD\nNUM3 brighter HUD", "HMD");
+			ref_HMDsymbology.SetOptionModeInfo("dimming");
+			return;
+		}
 	}
 
 	void HMD_OnNext(){
-		HDTS_Hint("HMD_OnNext", "HMD");
+		if(HMD_selectedOption == CSWG_HMD_Mode.DIM){
+			HMD_Brightness++;
+			if(HMD_Brightness > 10){
+				HMD_Brightness = 10;
+				return;
+			}
+			ref_HMDsymbology.SetBrightness(HMD_Brightness);
+			return;
+		}
 	}
 
 	void HMD_OnOption(){
-		HDTS_Hint("HMD_OnOption ", "HMD");
+		if(HMD_selectedOption == CSWG_HMD_Mode.DIM){
+			HMD_Brightness--;
+			if(HMD_Brightness < 0){
+				HMD_Brightness = 0;
+				return;
+			}
+			ref_HMDsymbology.SetBrightness(HMD_Brightness);
+			return;
+		}
 	}
 
 	void HDTS_Hint(string text, string title){
