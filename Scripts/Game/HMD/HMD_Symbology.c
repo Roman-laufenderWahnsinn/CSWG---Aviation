@@ -68,14 +68,14 @@ class HMD_Symbology : Managed
 	ref array<ImageWidget> arrayImgW_TargetDiamonds = {};
 	ref array<TextWidget> arrayTextW_TargetLabels = {};
 	TextWidget textW_TargetLine;
-	ref array<ref HDTS_Target> arrayHMD_Targets = {};
+	ref array<ref HMD_Target> arrayHMD_Targets = {};
 	float float_TargetBlinkClock;
 	ref Color color_TargetMatched = new Color(0.35, 1, 0.45, 1);
 	ref Color color_TargetOther = new Color(1, 0.72, 0.24, 1);
 	static const float WAYPOINT_HALF = 11;
 	static const float MARKER_HALF = 8;
 	TextWidget textW_NavLine;
-	ref array<ref HDTS_Target> arrayHMD_TargetsOrdered = {};
+	ref array<ref HMD_Target> arrayHMD_TargetsOrdered = {};
 	ref Color color_Waypoint = new Color(1, 0.45, 1, 1);
 	
 	// Camera frame of the current frame, filled by UpdateWorldSymbology and reused for target projection
@@ -179,7 +179,7 @@ class HMD_Symbology : Managed
 		return navSelection;
 	}
 
-	static string NavKey(notnull HDTS_Target target){
+	static string NavKey(notnull HMD_Target target){
 		vector p = target.m_vPosition;
 		return target.m_sSource + "|" + target.m_sLabel + "|" + Math.Round(p[0]).ToString() + "/" + Math.Round(p[2]).ToString();
 	}
@@ -508,8 +508,8 @@ class HMD_Symbology : Managed
 
 	void UpdateTargets(notnull IEntity vehicle, float ownHeading, float groundKt, float timeSlice){
 		int count = 0;
-		if (HDTS_TargetRegistry.Count() > 0)
-			count = HDTS_TargetRegistry.Collect(vehicle, arrayHMD_Targets);
+		if (HMD_TargetRegistry.Count() > 0)
+			count = HMD_TargetRegistry.Collect(vehicle, arrayHMD_Targets);
 
 		float_TargetBlinkClock += timeSlice;
 		if (float_TargetBlinkClock > TARGET_BLINK_PERIOD)
@@ -519,7 +519,7 @@ class HMD_Symbology : Managed
 		debug_TargetDebugClock += timeSlice;
 		if (debug_TargetDebugClock > 5)	{
 			debug_TargetDebugClock = 0;
-			Print(string.Format("[HDTS] targets: providers=%1 collected=%2 camera=%3", HDTS_TargetRegistry.Count(), count, cameraValid.ToString()), LogLevel.NORMAL);
+			Print(string.Format("[HDTS] targets: providers=%1 collected=%2 camera=%3", HMD_TargetRegistry.Count(), count, cameraValid.ToString()), LogLevel.NORMAL);
 		}
 
 		if (count == 0 || !cameraValid)	{
@@ -533,22 +533,22 @@ class HMD_Symbology : Managed
 		bool showWaypoints = true;
 
 		arrayHMD_TargetsOrdered.Clear();
-		HDTS_Target primaryTarget;
-		HDTS_Target primaryWaypoint;
-		foreach (HDTS_Target target : arrayHMD_Targets)	{
+		HMD_Target primaryTarget;
+		HMD_Target primaryWaypoint;
+		foreach (HMD_Target target : arrayHMD_Targets)	{
 			if (!target)
 				continue;
 
 			target.m_fRange = vector.Distance(ownPos, target.m_vPosition);
-			if (target.m_eKind == HDTS_ETargetKind.MARKER && target.m_fRange > MARKER_RANGE_FULL)
+			if (target.m_eKind == HMD_ETargetKind.MARKER && target.m_fRange > MARKER_RANGE_FULL)
 				continue;
-			if (target.m_eKind == HDTS_ETargetKind.WAYPOINT && !showWaypoints)
+			if (target.m_eKind == HMD_ETargetKind.WAYPOINT && !showWaypoints)
 				continue;
 
 			if (target.m_bPrimary){
-				if (target.m_eKind == HDTS_ETargetKind.TARGET && !primaryTarget)
+				if (target.m_eKind == HMD_ETargetKind.TARGET && !primaryTarget)
 					primaryTarget = target;
-				else if (target.m_eKind == HDTS_ETargetKind.WAYPOINT && !primaryWaypoint)
+				else if (target.m_eKind == HMD_ETargetKind.WAYPOINT && !primaryWaypoint)
 					primaryWaypoint = target;
 			}
 
@@ -559,9 +559,9 @@ class HMD_Symbology : Managed
 		}
 
 		navKeysArray.Clear();
-		HDTS_Target selected;
-		foreach (HDTS_Target candidate : arrayHMD_TargetsOrdered){
-			if (candidate.m_eKind == HDTS_ETargetKind.TARGET)
+		HMD_Target selected;
+		foreach (HMD_Target candidate : arrayHMD_TargetsOrdered){
+			if (candidate.m_eKind == HMD_ETargetKind.TARGET)
 				continue;
 			string key = NavKey(candidate);
 			navKeysArray.Insert(key);
@@ -579,8 +579,8 @@ class HMD_Symbology : Managed
 		}
 
 		if (!primaryTarget){
-			foreach (HDTS_Target candidate : arrayHMD_TargetsOrdered){
-				if (candidate.m_eKind != HDTS_ETargetKind.TARGET)
+			foreach (HMD_Target candidate : arrayHMD_TargetsOrdered){
+				if (candidate.m_eKind != HMD_ETargetKind.TARGET)
 					continue;
 				if (!primaryTarget)
 					primaryTarget = candidate;
@@ -591,8 +591,8 @@ class HMD_Symbology : Managed
 			}
 		}
 		if (!primaryWaypoint){
-			foreach (HDTS_Target candidate : arrayHMD_TargetsOrdered){
-				if (candidate.m_eKind == HDTS_ETargetKind.WAYPOINT){
+			foreach (HMD_Target candidate : arrayHMD_TargetsOrdered){
+				if (candidate.m_eKind == HMD_ETargetKind.WAYPOINT){
 					primaryWaypoint = candidate;
 					break;
 				}
@@ -600,7 +600,7 @@ class HMD_Symbology : Managed
 		}
 
 		int shown = 0;
-		foreach (HDTS_Target target : arrayHMD_TargetsOrdered){
+		foreach (HMD_Target target : arrayHMD_TargetsOrdered){
 			if (shown >= TARGET_POOL)
 				break;
 
@@ -626,7 +626,7 @@ class HMD_Symbology : Managed
 			float rotation = 45;
 			bool blink = false;
 			Color color = target.m_Color;
-			if (target.m_eKind == HDTS_ETargetKind.TARGET){
+			if (target.m_eKind == HMD_ETargetKind.TARGET){
 				blink = target.m_bMatched;
 				if (!color){
 					if (target.m_bMatched)
@@ -634,7 +634,7 @@ class HMD_Symbology : Managed
 					else
 						color = color_TargetOther;
 				}
-			}else if (target.m_eKind == HDTS_ETargetKind.WAYPOINT){
+			}else if (target.m_eKind == HMD_ETargetKind.WAYPOINT){
 				half = WAYPOINT_HALF;
 				rotation = 0;
 				if (!color)
@@ -723,7 +723,7 @@ class HMD_Symbology : Managed
 		Show(textW_NavLine, false);
 	}
 	
-	static int CompareTargets(notnull HDTS_Target a, notnull HDTS_Target b){
+	static int CompareTargets(notnull HMD_Target a, notnull HMD_Target b){
 		if (a.m_eKind != b.m_eKind)
 			return a.m_eKind - b.m_eKind;
 

@@ -10,7 +10,7 @@
 //!
 //! Read-only: nothing is sent back to the ATAK, no server component is involved.
 //------------------------------------------------------------------------------------------------
-class HDTS_ATAK_Provider : HDTS_TargetProvider
+class HDTS_ATAK_Provider : HMD_TargetProvider
 {
 	protected static const string SOURCE_MARKER = "MRK";
 	protected static const string SOURCE_WAYPOINT = "WPT";
@@ -20,7 +20,7 @@ class HDTS_ATAK_Provider : HDTS_TargetProvider
 	protected static int s_iNextLogMs;
 
 	//------------------------------------------------------------------------------------------------
-	override void GetTargets(notnull IEntity vehicle, notnull array<ref HDTS_Target> outTargets)
+	override void GetTargets(notnull IEntity vehicle, notnull array<ref HMD_Target> outTargets)
 	{
 		BaseWorld world = vehicle.GetWorld();
 		if (!world)
@@ -50,7 +50,7 @@ class HDTS_ATAK_Provider : HDTS_TargetProvider
 
 	//------------------------------------------------------------------------------------------------
 	//! Own waypoints ("WP3") and the ones faction members shared ("WP2 Razgriz")
-	protected void AddWaypoints(notnull BaseWorld world, vector ownPos, notnull array<ref HDTS_Target> outTargets)
+	protected void AddWaypoints(notnull BaseWorld world, vector ownPos, notnull array<ref HMD_Target> outTargets)
 	{
 		int count = GAZ_WaypointController.Count();
 		if (count == 0)
@@ -64,8 +64,8 @@ class HDTS_ATAK_Provider : HDTS_TargetProvider
 			if (!entry)
 				continue;
 
-			HDTS_Target target = new HDTS_Target();
-			target.m_eKind = HDTS_ETargetKind.WAYPOINT;
+			HMD_Target target = new HMD_Target();
+			target.m_eKind = HMD_ETargetKind.WAYPOINT;
 			target.m_vPosition = Vector(entry.m_fWorldX, world.GetSurfaceY(entry.m_fWorldX, entry.m_fWorldZ), entry.m_fWorldZ);
 			target.m_sSource = SOURCE_WAYPOINT;
 			target.m_Color = GAZ_PlayerMarkerPalette.Get(entry.m_iColorIdx);
@@ -95,7 +95,7 @@ class HDTS_ATAK_Provider : HDTS_TargetProvider
 	//------------------------------------------------------------------------------------------------
 	//! User-placed ATAK markers. The server only sends a faction its own markers, so the local
 	//! list is already what this pilot may see.
-	protected void AddMarkers(notnull BaseWorld world, vector ownPos, notnull array<ref HDTS_Target> outTargets)
+	protected void AddMarkers(notnull BaseWorld world, vector ownPos, notnull array<ref HMD_Target> outTargets)
 	{
 		GAZ_MarkerManagerComponent manager = GAZ_MarkerManagerComponent.GetInstance();
 		if (!manager)
@@ -122,8 +122,8 @@ class HDTS_ATAK_Provider : HDTS_TargetProvider
 			if (label.IsEmpty())
 				label = sidc.Label();
 
-			HDTS_Target target = new HDTS_Target();
-			target.m_eKind = HDTS_ETargetKind.MARKER;
+			HMD_Target target = new HMD_Target();
+			target.m_eKind = HMD_ETargetKind.MARKER;
 			target.m_vPosition = Vector(marker.m_fWorldX, world.GetSurfaceY(marker.m_fWorldX, marker.m_fWorldZ), marker.m_fWorldZ);
 			target.m_sSource = SOURCE_MARKER;
 			label.ToUpper();
@@ -142,6 +142,6 @@ modded class SCR_PlayerController
 	override protected void OnInit(IEntity owner)
 	{
 		super.OnInit(owner);
-		HDTS_TargetRegistry.Register(new HDTS_ATAK_Provider());
+		HMD_TargetRegistry.Register(new HDTS_ATAK_Provider());
 	}
 }
