@@ -11,7 +11,7 @@ modded class SCR_PlayerController{
 	static const string HMD_CONTEXT = "CSWG_HMD_Context";
 	static const string HMD_ACTION_MENU = "CSWG_HMD_Menu";
 	static const string HMD_ACTION_NEXT = "CSWG_HMD_Next";
-	static const string HMD_ACTION_PREV = "CSWG_HMD_Prev";
+	static const string HMD_ACTION_OPTION = "CSWG_HMD_Option";
 	static const bool HMD_REQUIRE_HELMET = true;
 	static const float HMD_HINT_SECONDS = 4;
 
@@ -128,7 +128,7 @@ modded class SCR_PlayerController{
 
 		inputManager.AddActionListener(HMD_ACTION_MENU, EActionTrigger.DOWN, HMD_OnMenu);
 		inputManager.AddActionListener(HMD_ACTION_NEXT, EActionTrigger.DOWN, HMD_OnNext);
-		inputManager.AddActionListener(HMD_ACTION_PREV, EActionTrigger.DOWN, HMD_OnPrev);
+		inputManager.AddActionListener(HMD_ACTION_OPTION, EActionTrigger.DOWN, HMD_OnOption);
 		HMD_InputReady = true;
 	}
 
@@ -140,8 +140,8 @@ modded class SCR_PlayerController{
 		HDTS_Hint("HMD_OnNext", "HMD");
 	}
 
-	void HMD_OnPrev(){
-		HDTS_Hint("HMD_OnPrev ", "HMD");
+	void HMD_OnOption(){
+		HDTS_Hint("HMD_OnOption ", "HMD");
 	}
 
 	void HDTS_Hint(string text, string title){
