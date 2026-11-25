@@ -46,7 +46,7 @@ class HMD_TargetRegistry{
 		}
 
 		s_aProviders.Insert(provider);
-		Print("[HDTS] Target provider registered: " + type.ToString(), LogLevel.NORMAL);
+		Print("[CSWG_HMD] Target provider registered: " + type.ToString(), LogLevel.NORMAL);
 	}
 
 	//------------------------------------------------------------------------------------------------
