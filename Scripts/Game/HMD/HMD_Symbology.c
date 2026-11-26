@@ -101,6 +101,7 @@ class HMD_Symbology : Managed
 	bool layoutIsDirty = true;
 	WorldTimestamp lastTimestampFuelUpdate;
 	string optionMode = "";
+	int markerDetail = 2;
 
 	void HMD_Symbology(){
 		WorkspaceWidget workspace = GetGame().GetWorkspace();
@@ -655,7 +656,12 @@ class HMD_Symbology : Managed
 
 			FrameSlot.SetSize(symbol, half * 2, half * 2);
 			FrameSlot.SetPos(symbol, screen[0] - half, screen[1] - half);
-			label.SetText(target.labelName + "  " + FormatRange(target.filterRange));
+			if(markerDetail == 2)
+				label.SetText(target.labelName + "  " + FormatRange(target.filterRange));
+			else if(markerDetail == 1)
+				label.SetText(target.labelName + "  ");
+			else
+				label.SetText("");
 			FrameSlot.SetPos(label, screen[0] + half + 6, screen[1] - 11);
 		}
 
@@ -675,6 +681,7 @@ class HMD_Symbology : Managed
 					state = "  CODE MISMATCH";
 
 				textW_TargetLine.SetText(string.Format("%1 %2  %3  %4%5", source, primaryTarget.labelName, FormatRange(primaryTarget.filterRange), FormatBearing(ownPos, primaryTarget.vectorPosition, ownHeading), state));
+				
 				if (primaryTarget.color)
 					textW_TargetLine.SetColor(primaryTarget.color);
 				else if (primaryTarget.codeMatched)
