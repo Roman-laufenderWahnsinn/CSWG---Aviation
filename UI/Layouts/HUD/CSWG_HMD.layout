@@ -143,22 +143,6 @@ OverlayWidgetClass {
       ShadowColor 0 0 0 0.6
      }
     }
-    TextWidgetClass "{6AE1284C5C0276D3}" {
-     Name "HeadingTape"
-     Slot FrameWidgetSlot "{5752C4760000005B}" {
-     }
-     Color 0.35 1 0.45 1
-     Text ""
-     "Font Size" 16
-     "Min Font Size" 16
-     "Horizontal Alignment" Center
-     "Vertical Alignment" Center
-     FontProperties FontProperties "{5752C4760000005C}" {
-      Font "{EABA4FE9D014CCEF}UI/Fonts/RobotoCondensed/RobotoCondensed_Bold.fnt"
-      ShadowSize 4
-      ShadowColor 0 0 0 0.6
-     }
-    }
     TextWidgetClass "{6AE1284C5C022DC4}" {
      Name "Rotor"
      Slot FrameWidgetSlot "{5752C4760000005E}" {

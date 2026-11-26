@@ -59,7 +59,7 @@ class HMD_CTG_Provider : HMD_TargetProvider{
 
 		if (now >= s_iNextLogMs){
 			s_iNextLogMs = now + POLL_MS;
-			Print(string.Format("[HDTS_CTG] records=%1 reported=%2 status=%3", records.Count(), outTargets.Count() - before, status), LogLevel.NORMAL);
+			Print(string.Format("[CSWG_HMD_CTG] records=%1 reported=%2 status=%3", records.Count(), outTargets.Count() - before, status), LogLevel.NORMAL);
 		}
 	}
 

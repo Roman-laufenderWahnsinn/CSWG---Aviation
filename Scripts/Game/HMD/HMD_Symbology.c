@@ -54,7 +54,6 @@ class HMD_Symbology : Managed
 	TextWidget textW_RadarAlt;
 	TextWidget textW_VSI;
 	TextWidget textW_Heading;
-	TextWidget textW_HeadingTape;
 	TextWidget textW_Rotor;
 	TextWidget textW_Fuel;
 	TextWidget textW_FuelTimer;
@@ -203,7 +202,6 @@ class HMD_Symbology : Managed
 		textW_RadarAlt = TextWidget.Cast(wingetRoot.FindAnyWidget("RadarAlt"));
 		textW_VSI = TextWidget.Cast(wingetRoot.FindAnyWidget("VSI"));
 		textW_Heading = TextWidget.Cast(wingetRoot.FindAnyWidget("Heading"));
-		textW_HeadingTape = TextWidget.Cast(wingetRoot.FindAnyWidget("HeadingTape"));
 		textW_Rotor = TextWidget.Cast(wingetRoot.FindAnyWidget("Rotor"));
 		textW_Fuel = TextWidget.Cast(wingetRoot.FindAnyWidget("Fuel"));
 		textW_FuelTimer = TextWidget.Cast(wingetRoot.FindAnyWidget("FuelTimer"));
@@ -267,7 +265,6 @@ class HMD_Symbology : Managed
 		Place(textW_VSI, right, screenCenterY + 48, 140, 22);
 
 		Place(textW_Heading, screenCenterX, screenCenterY - 250, 110, 34);
-		Place(textW_HeadingTape, screenCenterX, screenCenterY - 222, 620, 24);
 
 		Place(textW_GForce, left, screenCenterY + 226, 140, 22);
 		Place(textW_Rotor, left, screenCenterY + 252, 140, 26);
@@ -277,7 +274,7 @@ class HMD_Symbology : Managed
 
 		Place(textW_Warning, screenCenterX, screenCenterY + 150, 360, 32);
 		Place(textW_TargetLine, screenCenterX, screenCenterY - 190, 520, 24);
-		Place(textW_NavLine, screenCenterX, screenCenterY - 166, 520, 22);
+		Place(textW_NavLine, screenCenterX, screenCenterY + 252, 520, 22);
 
 		for (int i = 0; i < arrayImgW_TargetDiamonds.Count(); i++){
 			if (arrayImgW_TargetDiamonds[i])
@@ -379,7 +376,6 @@ class HMD_Symbology : Managed
 		SetText(textW_VSI, vsiText + " FPM");
 
 		SetText(textW_Heading, GetCardinalDirection8(heading));
-		SetText(textW_HeadingTape, BuildHeadingTape(heading));
 
 		if (engineOn)
 			SetText(textW_Rotor, "NR " + Math.Round(rotorPct).ToString() + "%");
@@ -743,10 +739,10 @@ class HMD_Symbology : Managed
 			relative += 360;
 
 		string side = "L";
-		if (relative >= 0)
+		if (relative > 0)
 			side = "R";
 
-		return string.Format("BRG %1  %2%3", Math.Round(bearing).ToString(3), side, Math.Round(Math.AbsFloat(relative)).ToString());
+		return string.Format("BRG %1  %2%3", Math.Round(bearing).ToString(3,0), side, Math.Round(Math.AbsFloat(relative)).ToString());
 	}
 
 	static string FormatEte(float seconds){
@@ -782,37 +778,6 @@ class HMD_Symbology : Managed
 	float ElevationToPixels(float elevationDeg, float camPitchDeg, float focal){
 		float delta = Math.Clamp(elevationDeg - camPitchDeg, -80, 80);
 		return Math.Tan(delta * Math.DEG2RAD) * focal;
-	}
-
-	string BuildHeadingTape(float heading){
-		int centre = Math.Round(heading / 10);
-		string tape;
-		for (int offset = -3; offset <= 3; offset++){
-			int token = centre + offset;
-			while (token < 0)
-				token += 36;
-			token = token % 36;
-
-			string label;
-			if (token == 0)
-				label = "N";
-			else if (token == 9)
-				label = "E";
-			else if (token == 18)
-				label = "S";
-			else if (token == 27)
-				label = "W";
-			else
-				label = token.ToString(2);
-
-			if (offset == 0)
-				label = "[" + label + "]";
-
-			if (offset > -3)
-				tape += "  .  ";
-			tape += label;
-		}
-		return tape;
 	}
 
 	static float GetHeadingDeg(notnull IEntity fallbackEntity){
