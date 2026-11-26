@@ -62,7 +62,6 @@ class HMD_Symbology : Managed
 
 	// Target designation
 	static const int TARGET_POOL = 12;
-	static const float TARGET_DIAMOND_HALF = 16;
 	static const float TARGET_BLINK_PERIOD = 1.0;
 	ref array<ImageWidget> arrayImgW_TargetDiamonds = {};
 	ref array<TextWidget> arrayTextW_TargetLabels = {};
@@ -71,11 +70,11 @@ class HMD_Symbology : Managed
 	float float_TargetBlinkClock;
 	ref Color color_TargetMatched = new Color(0.35, 1, 0.45, 1);
 	ref Color color_TargetOther = new Color(1, 0.72, 0.24, 1);
-	static const float WAYPOINT_HALF = 11;
-	static const float MARKER_HALF = 8;
 	TextWidget textW_NavLine;
 	ref array<ref HMD_Target> arrayHMD_TargetsOrdered = {};
 	ref Color color_Waypoint = new Color(1, 0.45, 1, 1);
+	static const float BASE_SYMBOL_SIZE = 32.0;
+	float pilotSymbolFactor = 1.0;
 	
 	// Camera frame of the current frame, filled by UpdateWorldSymbology and reused for target projection
 	bool cameraValid;
@@ -133,6 +132,14 @@ class HMD_Symbology : Managed
 	int GetBrightness(){
 		return brightessHMD;
 	}
+	
+	float GetPilotSymbolFactor(){
+		return pilotSymbolFactor;
+	}
+
+	void SetPilotSymbolFactor(float factor){
+		pilotSymbolFactor = Math.Clamp(factor, 0.25, 4.0);
+	}
 
 	void SetBrightness(int level){
 		brightessHMD = Math.ClampInt(level, 0, 100);
@@ -187,7 +194,8 @@ class HMD_Symbology : Managed
 	void ApplyBrightness(){
 		if (!wingetRoot)
 			return;
-
+		if(brightessHMD > 10.0)
+			brightessHMD = 10.0;
 		wingetRoot.SetOpacity(brightessHMD/10.0);
 	}
 
@@ -279,7 +287,7 @@ class HMD_Symbology : Managed
 
 		for (int i = 0; i < arrayImgW_TargetDiamonds.Count(); i++){
 			if (arrayImgW_TargetDiamonds[i])
-				FrameSlot.SetSize(arrayImgW_TargetDiamonds[i], TARGET_DIAMOND_HALF * 2, TARGET_DIAMOND_HALF * 2);
+				FrameSlot.SetSize(arrayImgW_TargetDiamonds[i], BASE_SYMBOL_SIZE, BASE_SYMBOL_SIZE);
 			if (arrayTextW_TargetLabels[i])
 				FrameSlot.SetSize(arrayTextW_TargetLabels[i], 260, 22);
 		}
@@ -619,7 +627,6 @@ class HMD_Symbology : Managed
 				inView = screen[0] >= 0 && screen[0] <= renderTargetWidth && screen[1] >= 0 && screen[1] <= renderTargetHeigth;
 			}
 
-			float half = TARGET_DIAMOND_HALF;
 			float rotation = 45;
 			bool blink = false;
 			Color color = target.color;
@@ -632,37 +639,49 @@ class HMD_Symbology : Managed
 						color = color_TargetOther;
 				}
 			}else if (target.targetKind == HMD_ETargetKind.WAYPOINT){
-				half = WAYPOINT_HALF;
 				rotation = 0;
 				if (!color)
 					color = color_Waypoint;
 			}else{
-				half = MARKER_HALF;
-				if (target == primaryWaypoint)
-					half = WAYPOINT_HALF;
 				rotation = 0;
 				if (!color)
 					color = color_TargetOther;
 			}
 
+			Color symbolColor = color;
+			if (target.HasIconTexture()){
+				if (!target.iconQuad.IsEmpty()){
+					symbol.LoadImageFromSet(0, target.iconTexture, target.iconQuad);
+				}else{
+					symbol.LoadImageTexture(0, target.iconTexture);
+				}
+
+				rotation = 0;
+				if (!target.tintIcon)
+					symbolColor = Color.FromInt(Color.WHITE);
+			}
+
+			float size = BASE_SYMBOL_SIZE * target.GetIconScale() * pilotSymbolFactor;
+			float halfSize = size * 0.5;
+
 			bool visible = inView && (!blink || blinkOn);
 			symbol.SetRotation(rotation);
-			symbol.SetColor(color);
+			symbol.SetColor(symbolColor);
 			label.SetColor(color);
 			symbol.SetVisible(visible);
 			label.SetVisible(inView);
 			if (!inView)
 				continue;
 
-			FrameSlot.SetSize(symbol, half * 2, half * 2);
-			FrameSlot.SetPos(symbol, screen[0] - half, screen[1] - half);
+			FrameSlot.SetSize(symbol, size, size);
+			FrameSlot.SetPos(symbol, screen[0] - halfSize, screen[1] - halfSize);
 			if(markerDetail == 2)
 				label.SetText(target.labelName + "  " + FormatRange(target.filterRange));
 			else if(markerDetail == 1)
 				label.SetText(target.labelName + "  ");
 			else
 				label.SetText("");
-			FrameSlot.SetPos(label, screen[0] + half + 6, screen[1] - 11);
+			FrameSlot.SetPos(label, screen[0] + halfSize + 6, screen[1] - 11);
 		}
 
 		for (int i = shown; i < TARGET_POOL; i++){
@@ -827,5 +846,29 @@ class HMD_Symbology : Managed
 	
 	void SetOptionModeInfo(string optionModeNew){
 		optionMode = optionModeNew;
+	}
+	
+	//! Applies target icon texture/quad when provided, or keeps standard geometric symbol rendering
+	void ApplyTargetSymbolVisual(notnull ImageWidget symbol, notnull HMD_Target target, notnull Color fallbackColor, float defaultRotation){
+		if (target.HasIconTexture()){
+			if (!target.iconQuad.IsEmpty()){
+				symbol.LoadImageFromSet(0, target.iconTexture, target.iconQuad);
+			}else{
+				symbol.LoadImageTexture(0, target.iconTexture);
+			}
+
+			// Icons are upright unless explicitly rotated
+			symbol.SetRotation(0);
+
+			if (target.tintIcon)
+				symbol.SetColor(fallbackColor);
+			else
+				symbol.SetColor(Color.FromInt(Color.WHITE));
+			return;
+		}
+
+		// Default geometric symbol (diamond / square)
+		symbol.SetRotation(defaultRotation);
+		symbol.SetColor(fallbackColor);
 	}
 }

@@ -108,6 +108,10 @@ class HMD_CTG_Provider : HMD_TargetProvider{
 		target.targetSource = SOURCE;
 		target.labelName = label;
 		target.color = color;
+		target.iconTexture = "{50C4AA118EA6294F}UI/Textures/Device/AtakIcons.imageset";
+		target.iconQuad = "circle_filled";
+		target.tintIcon = true;
+		target.iconScale = 1.0;
 		outTargets.Insert(target);
 	}
 

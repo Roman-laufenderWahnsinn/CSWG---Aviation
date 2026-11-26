@@ -28,8 +28,17 @@ class HMD_Target{
 	ResourceName iconTexture;				//!< Optional texture/imageset resource path; empty = use default shape
 	string iconQuad;						//!< Optional quad/sub-image name when iconTexture is an imageset
 	bool tintIcon = true;					//!< True = apply `color` tint to the graphic; false = keep native graphic colours
+	float iconScale = 1.0;					//!< Provider-side size multiplier (> 0), further scaled by HMD display settings
+	
 	bool HasIconTexture(){
 		return !iconTexture.IsEmpty();
+	}
+	
+	float GetIconScale(){
+		if (iconScale <= 0)
+			return 1.0;
+
+		return iconScale;
 	}
 }
 

@@ -61,6 +61,10 @@ class HMD_ATAK_Provider : HMD_TargetProvider{
 			target.targetSource = SOURCE_WAYPOINT;
 			target.color = GAZ_PlayerMarkerPalette.Get(entry.m_iColorIdx);
 			target.isPrimary = (entry == active);
+			target.iconTexture = "{50C4AA118EA6294F}UI/Textures/Device/AtakIcons.imageset";
+			target.iconQuad = "circle_filled";
+			target.tintIcon = true;
+			target.iconScale = 1.0;
 
 			if (entry.m_bIsRemote){
 				target.labelName = "WP" + entry.m_iOwnerWpId.ToString();
@@ -115,6 +119,10 @@ class HMD_ATAK_Provider : HMD_TargetProvider{
 			label.ToUpper();
 			target.labelName = label;
 			target.color = GAZ_Sidc.AffiliationColor(sidc.affiliation);
+			target.iconTexture = GAZ_MarkerCatalog.GetImagesetForFunction(sidc.functionId);
+			target.iconQuad = GAZ_MarkerCatalog.GetSpriteName(sidc.affiliation, sidc.functionId);
+			target.tintIcon = false;
+			target.iconScale = 1.0;
 			outTargets.Insert(target);
 		}
 	}
