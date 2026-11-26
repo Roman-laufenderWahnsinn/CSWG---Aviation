@@ -13,7 +13,7 @@ enum HMD_ETargetKind{
 	MARKER		//!< Map marker: small box, provider colour (affiliation); decluttered first
 }
 
-//! One symbol to draw. Filled by providers, consumed by HDTS_Symbology.
+//! One symbol to draw. Filled by providers, consumed by HMD_Symbology.
 class HMD_Target{
 	vector m_vPosition;		//!< World position of the point
 	string m_sLabel;		//!< Short label drawn next to the symbol, e.g. the laser code or "WP3"
