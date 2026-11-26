@@ -60,6 +60,11 @@ modded class SCR_PlayerController{
 			HMD_DestroyDisplay();
 			return;
 		}
+		
+		if(IsPlayerInGameMaster()){
+			HMD_DestroyDisplay();
+			return;
+		}
 
 		HMD_InitInput();
 		if (HMD_InputReady)
@@ -165,7 +170,7 @@ modded class SCR_PlayerController{
 	void HMD_OnNext(){
 		if(HMD_selectedOption == CSWG_HMD_Mode.NAV){
 			ref_HMDsymbology.CycleNav();
-			HMD_Hint(ref_HMDsymbology.navSelectionText, "NAV");
+			HMD_Hint(ref_HMDsymbology.navSelectionText, "Nav/Mark selected");
 			return;
 		}
 		if(HMD_selectedOption == CSWG_HMD_Mode.DIM){
@@ -181,7 +186,7 @@ modded class SCR_PlayerController{
 			ref_HMDsymbology.markerDetail++;
 			if(ref_HMDsymbology.markerDetail > 2)
 				ref_HMDsymbology.markerDetail = 2;
-			HMD_Hint(markerDetailMode[ref_HMDsymbology.markerDetail], "MARKER DETAILS");
+			HMD_Hint(markerDetailMode[ref_HMDsymbology.markerDetail], "Marker details setting");
 			return;
 		}
 	}
@@ -200,12 +205,20 @@ modded class SCR_PlayerController{
 			ref_HMDsymbology.markerDetail--;
 			if(ref_HMDsymbology.markerDetail < 0)
 				ref_HMDsymbology.markerDetail = 0;
-			HMD_Hint(markerDetailMode[ref_HMDsymbology.markerDetail], "MARKER DETAILS");
+			HMD_Hint(markerDetailMode[ref_HMDsymbology.markerDetail], "Marker details setting");
 			return;
 		}
 	}
 
 	void HMD_Hint(string text, string title){
 		SCR_HintManagerComponent.ShowCustomHint(text, title, HMD_HINT_SECONDS);
+	}
+	
+	bool IsPlayerInGameMaster(){
+	    SCR_EditorManagerEntity editorManager = SCR_EditorManagerEntity.GetInstance();
+    	if (!editorManager)
+        	return false;
+
+    	return editorManager.IsOpened();
 	}
 }
