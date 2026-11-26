@@ -10,15 +10,13 @@ class HMD_MapMarker_Provider : HMD_TargetProvider
 	protected static int s_iNextLogMs;
 
 	//------------------------------------------------------------------------------------------------
-	override void GetTargets(notnull IEntity vehicle, notnull array<ref HMD_Target> outTargets)
-	{
+	override void GetTargets(notnull IEntity vehicle, notnull array<ref HMD_Target> outTargets){
 		BaseWorld world = vehicle.GetWorld();
 		if (!world)
 			return;
 
 		SCR_MapMarkerManagerComponent manager = SCR_MapMarkerManagerComponent.GetInstance();
-		if (!manager)
-		{
+		if (!manager){
 			BaseGameMode gameMode = GetGame().GetGameMode();
 			if (gameMode)
 				manager = SCR_MapMarkerManagerComponent.Cast(gameMode.FindComponent(SCR_MapMarkerManagerComponent));
@@ -35,14 +33,9 @@ class HMD_MapMarker_Provider : HMD_TargetProvider
 		float maxRangeSq = MAX_RANGE_M * MAX_RANGE_M;
 		int before = outTargets.Count();
 
-		foreach (SCR_MapMarkerBase marker : markers)
-		{
+		foreach (SCR_MapMarkerBase marker : markers){
 			if (!marker)
 				continue;
-
-			// Falls nur von Spielern gesetzte Marker gewünscht sind, Server-Marker überspringen:
-			//if (marker.IsServerMarker())
-				//continue;
 
 			int pos[2];
 			marker.GetWorldPos(pos);
@@ -70,8 +63,7 @@ class HMD_MapMarker_Provider : HMD_TargetProvider
 		}
 
 		int now = System.GetTickCount();
-		if (now >= s_iNextLogMs)
-		{
+		if (now >= s_iNextLogMs){
 			s_iNextLogMs = now + 5000;
 			Print(string.Format("[CSWG_HMD_MAP] total=%1 reported=%2", markers.Count(), outTargets.Count() - before), LogLevel.NORMAL);
 		}
@@ -79,10 +71,8 @@ class HMD_MapMarker_Provider : HMD_TargetProvider
 }
 
 //------------------------------------------------------------------------------------------------
-modded class SCR_PlayerController
-{
-	override protected void OnInit(IEntity owner)
-	{
+modded class SCR_PlayerController{
+	override protected void OnInit(IEntity owner){
 		super.OnInit(owner);
 		HMD_TargetRegistry.Register(new HMD_MapMarker_Provider());
 	}

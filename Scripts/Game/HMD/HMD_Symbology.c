@@ -815,9 +815,19 @@ class HMD_Symbology : Managed
 		return tape;
 	}
 
-	static float GetHeadingDeg(notnull IEntity entity){
-		vector forward = entity.GetWorldTransformAxis(2);
-		forward[1] = 0;
+	static float GetHeadingDeg(notnull IEntity fallbackEntity){
+		vector forward;
+		BaseWorld world = fallbackEntity.GetWorld();
+		
+		if (world){
+			vector camMat[4];
+			world.GetCurrentCamera(camMat);
+			forward = camMat[2]; // index 2 is the forward camera
+		}else{
+			forward = fallbackEntity.GetWorldTransformAxis(2);
+		}
+
+		forward[1] = 0;	// ignore pitch
 		if (forward.LengthSq() < 0.0001)
 			return 0;
 
@@ -826,6 +836,7 @@ class HMD_Symbology : Managed
 			heading += 360;
 		while (heading >= 360)
 			heading -= 360;
+			
 		return heading;
 	}
 	
