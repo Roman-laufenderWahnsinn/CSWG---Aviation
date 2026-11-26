@@ -56,25 +56,25 @@ class HMD_ATAK_Provider : HMD_TargetProvider{
 				continue;
 
 			HMD_Target target = new HMD_Target();
-			target.m_eKind = HMD_ETargetKind.WAYPOINT;
-			target.m_vPosition = Vector(entry.m_fWorldX, world.GetSurfaceY(entry.m_fWorldX, entry.m_fWorldZ), entry.m_fWorldZ);
-			target.m_sSource = SOURCE_WAYPOINT;
-			target.m_Color = GAZ_PlayerMarkerPalette.Get(entry.m_iColorIdx);
-			target.m_bPrimary = (entry == active);
+			target.targetKind = HMD_ETargetKind.WAYPOINT;
+			target.vectorPosition = Vector(entry.m_fWorldX, world.GetSurfaceY(entry.m_fWorldX, entry.m_fWorldZ), entry.m_fWorldZ);
+			target.targetSource = SOURCE_WAYPOINT;
+			target.color = GAZ_PlayerMarkerPalette.Get(entry.m_iColorIdx);
+			target.isPrimary = (entry == active);
 
 			if (entry.m_bIsRemote){
-				target.m_sLabel = "WP" + entry.m_iOwnerWpId.ToString();
+				target.labelName = "WP" + entry.m_iOwnerWpId.ToString();
 				string owner;
 				if (players)
 					owner = players.GetPlayerName(entry.m_iOwnerPid);
 				if (!owner.IsEmpty())
-					target.m_sLabel = target.m_sLabel + " " + owner;
+					target.labelName = target.labelName + " " + owner;
 			}else{
-				target.m_sLabel = "WP" + entry.m_iId.ToString();
+				target.labelName = "WP" + entry.m_iId.ToString();
 			}
 
 			if (entry.m_bArrived)
-				target.m_sLabel = target.m_sLabel + " ARR";
+				target.labelName = target.labelName + " ARR";
 
 			outTargets.Insert(target);
 		}
@@ -109,12 +109,12 @@ class HMD_ATAK_Provider : HMD_TargetProvider{
 				label = sidc.Label();
 
 			HMD_Target target = new HMD_Target();
-			target.m_eKind = HMD_ETargetKind.MARKER;
-			target.m_vPosition = Vector(marker.m_fWorldX, world.GetSurfaceY(marker.m_fWorldX, marker.m_fWorldZ), marker.m_fWorldZ);
-			target.m_sSource = SOURCE_MARKER;
+			target.targetKind = HMD_ETargetKind.MARKER;
+			target.vectorPosition = Vector(marker.m_fWorldX, world.GetSurfaceY(marker.m_fWorldX, marker.m_fWorldZ), marker.m_fWorldZ);
+			target.targetSource = SOURCE_MARKER;
 			label.ToUpper();
-			target.m_sLabel = label;
-			target.m_Color = GAZ_Sidc.AffiliationColor(sidc.affiliation);
+			target.labelName = label;
+			target.color = GAZ_Sidc.AffiliationColor(sidc.affiliation);
 			outTargets.Insert(target);
 		}
 	}

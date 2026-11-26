@@ -103,11 +103,11 @@ class HMD_CTG_Provider : HMD_TargetProvider{
 			return;
 
 		HMD_Target target = new HMD_Target();
-		target.m_eKind = HMD_ETargetKind.MARKER;
-		target.m_vPosition = Vector(point[0], world.GetSurfaceY(point[0], point[2]), point[2]);
-		target.m_sSource = SOURCE;
-		target.m_sLabel = label;
-		target.m_Color = color;
+		target.targetKind = HMD_ETargetKind.MARKER;
+		target.vectorPosition = Vector(point[0], world.GetSurfaceY(point[0], point[2]), point[2]);
+		target.targetSource = SOURCE;
+		target.labelName = label;
+		target.color = color;
 		outTargets.Insert(target);
 	}
 

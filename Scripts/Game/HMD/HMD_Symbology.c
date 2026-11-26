@@ -180,8 +180,8 @@ class HMD_Symbology : Managed
 	}
 
 	static string NavKey(notnull HMD_Target target){
-		vector p = target.m_vPosition;
-		return target.m_sSource + "|" + target.m_sLabel + "|" + Math.Round(p[0]).ToString() + "/" + Math.Round(p[2]).ToString();
+		vector p = target.vectorPosition;
+		return target.targetSource + "|" + target.labelName + "|" + Math.Round(p[0]).ToString() + "/" + Math.Round(p[2]).ToString();
 	}
 
 	void ApplyBrightness(){
@@ -539,16 +539,16 @@ class HMD_Symbology : Managed
 			if (!target)
 				continue;
 
-			target.m_fRange = vector.Distance(ownPos, target.m_vPosition);
-			if (target.m_eKind == HMD_ETargetKind.MARKER && target.m_fRange > MARKER_RANGE_FULL)
+			target.filterRange = vector.Distance(ownPos, target.vectorPosition);
+			if (target.targetKind == HMD_ETargetKind.MARKER && target.filterRange > MARKER_RANGE_FULL)
 				continue;
-			if (target.m_eKind == HMD_ETargetKind.WAYPOINT && !showWaypoints)
+			if (target.targetKind == HMD_ETargetKind.WAYPOINT && !showWaypoints)
 				continue;
 
-			if (target.m_bPrimary){
-				if (target.m_eKind == HMD_ETargetKind.TARGET && !primaryTarget)
+			if (target.isPrimary){
+				if (target.targetKind == HMD_ETargetKind.TARGET && !primaryTarget)
 					primaryTarget = target;
-				else if (target.m_eKind == HMD_ETargetKind.WAYPOINT && !primaryWaypoint)
+				else if (target.targetKind == HMD_ETargetKind.WAYPOINT && !primaryWaypoint)
 					primaryWaypoint = target;
 			}
 
@@ -561,7 +561,7 @@ class HMD_Symbology : Managed
 		navKeysArray.Clear();
 		HMD_Target selected;
 		foreach (HMD_Target candidate : arrayHMD_TargetsOrdered){
-			if (candidate.m_eKind == HMD_ETargetKind.TARGET)
+			if (candidate.targetKind == HMD_ETargetKind.TARGET)
 				continue;
 			string key = NavKey(candidate);
 			navKeysArray.Insert(key);
@@ -580,11 +580,11 @@ class HMD_Symbology : Managed
 
 		if (!primaryTarget){
 			foreach (HMD_Target candidate : arrayHMD_TargetsOrdered){
-				if (candidate.m_eKind != HMD_ETargetKind.TARGET)
+				if (candidate.targetKind != HMD_ETargetKind.TARGET)
 					continue;
 				if (!primaryTarget)
 					primaryTarget = candidate;
-				if (candidate.m_bMatched){
+				if (candidate.codeMatched){
 					primaryTarget = candidate;
 					break;
 				}
@@ -592,7 +592,7 @@ class HMD_Symbology : Managed
 		}
 		if (!primaryWaypoint){
 			foreach (HMD_Target candidate : arrayHMD_TargetsOrdered){
-				if (candidate.m_eKind == HMD_ETargetKind.WAYPOINT){
+				if (candidate.targetKind == HMD_ETargetKind.WAYPOINT){
 					primaryWaypoint = candidate;
 					break;
 				}
@@ -610,7 +610,7 @@ class HMD_Symbology : Managed
 			if (!symbol || !label)
 				continue;
 
-			vector rel = target.m_vPosition - vec_CamPos;
+			vector rel = target.vectorPosition - vec_CamPos;
 			float vx = vector.Dot(rel, vec_CamRight);
 			float vy = vector.Dot(rel, vec_CamUp);
 			float vz = vector.Dot(rel, vec_CamForward);
@@ -625,16 +625,16 @@ class HMD_Symbology : Managed
 			float half = TARGET_DIAMOND_HALF;
 			float rotation = 45;
 			bool blink = false;
-			Color color = target.m_Color;
-			if (target.m_eKind == HMD_ETargetKind.TARGET){
-				blink = target.m_bMatched;
+			Color color = target.color;
+			if (target.targetKind == HMD_ETargetKind.TARGET){
+				blink = target.codeMatched;
 				if (!color){
-					if (target.m_bMatched)
+					if (target.codeMatched)
 						color = color_TargetMatched;
 					else
 						color = color_TargetOther;
 				}
-			}else if (target.m_eKind == HMD_ETargetKind.WAYPOINT){
+			}else if (target.targetKind == HMD_ETargetKind.WAYPOINT){
 				half = WAYPOINT_HALF;
 				rotation = 0;
 				if (!color)
@@ -659,7 +659,7 @@ class HMD_Symbology : Managed
 
 			FrameSlot.SetSize(symbol, half * 2, half * 2);
 			FrameSlot.SetPos(symbol, screen[0] - half, screen[1] - half);
-			label.SetText(target.m_sLabel + "  " + FormatRange(target.m_fRange));
+			label.SetText(target.labelName + "  " + FormatRange(target.filterRange));
 			FrameSlot.SetPos(label, screen[0] + half + 6, screen[1] - 11);
 		}
 
@@ -670,18 +670,18 @@ class HMD_Symbology : Managed
 
 		if (textW_TargetLine){
 			if (primaryTarget){
-				string source = primaryTarget.m_sSource;
+				string source = primaryTarget.targetSource;
 				if (source.IsEmpty())
 					source = "TGT";
 
 				string state;
-				if (!primaryTarget.m_bMatched)
+				if (!primaryTarget.codeMatched)
 					state = "  CODE MISMATCH";
 
-				textW_TargetLine.SetText(string.Format("%1 %2  %3  %4%5", source, primaryTarget.m_sLabel, FormatRange(primaryTarget.m_fRange), FormatBearing(ownPos, primaryTarget.m_vPosition, ownHeading), state));
-				if (primaryTarget.m_Color)
-					textW_TargetLine.SetColor(primaryTarget.m_Color);
-				else if (primaryTarget.m_bMatched)
+				textW_TargetLine.SetText(string.Format("%1 %2  %3  %4%5", source, primaryTarget.labelName, FormatRange(primaryTarget.filterRange), FormatBearing(ownPos, primaryTarget.vectorPosition, ownHeading), state));
+				if (primaryTarget.color)
+					textW_TargetLine.SetColor(primaryTarget.color);
+				else if (primaryTarget.codeMatched)
 					textW_TargetLine.SetColor(color_TargetMatched);
 				else
 					textW_TargetLine.SetColor(color_TargetOther);
@@ -693,18 +693,18 @@ class HMD_Symbology : Managed
 
 		if (textW_NavLine){
 			if (primaryWaypoint){
-				string source = primaryWaypoint.m_sSource;
+				string source = primaryWaypoint.targetSource;
 				if (source.IsEmpty())
 					source = "WPT";
 
 				string ete;
 				float groundMps = groundKt / MPS_TO_KT;
 				if (groundMps > 5)
-					ete = "  ETE " + FormatEte(primaryWaypoint.m_fRange / groundMps);
+					ete = "  ETE " + FormatEte(primaryWaypoint.filterRange / groundMps);
 
-				textW_NavLine.SetText(string.Format("%1 %2  %3  %4%5", source, primaryWaypoint.m_sLabel, FormatRange(primaryWaypoint.m_fRange), FormatBearing(ownPos, primaryWaypoint.m_vPosition, ownHeading), ete));
-				if (primaryWaypoint.m_Color)
-					textW_NavLine.SetColor(primaryWaypoint.m_Color);
+				textW_NavLine.SetText(string.Format("%1 %2  %3  %4%5", source, primaryWaypoint.labelName, FormatRange(primaryWaypoint.filterRange), FormatBearing(ownPos, primaryWaypoint.vectorPosition, ownHeading), ete));
+				if (primaryWaypoint.color)
+					textW_NavLine.SetColor(primaryWaypoint.color);
 				else
 					textW_NavLine.SetColor(color_Waypoint);
 				textW_NavLine.SetVisible(true);
@@ -724,12 +724,12 @@ class HMD_Symbology : Managed
 	}
 	
 	static int CompareTargets(notnull HMD_Target a, notnull HMD_Target b){
-		if (a.m_eKind != b.m_eKind)
-			return a.m_eKind - b.m_eKind;
+		if (a.targetKind != b.targetKind)
+			return a.targetKind - b.targetKind;
 
-		if (a.m_fRange < b.m_fRange)
+		if (a.filterRange < b.filterRange)
 			return -1;
-		if (a.m_fRange > b.m_fRange)
+		if (a.filterRange > b.filterRange)
 			return 1;
 		return 0;
 	}

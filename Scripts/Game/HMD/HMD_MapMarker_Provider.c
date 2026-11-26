@@ -62,10 +62,10 @@ class HMD_MapMarker_Provider : HMD_TargetProvider
 			label.ToUpper();
 
 			HMD_Target target = new HMD_Target();
-			target.m_eKind = HMD_ETargetKind.MARKER;
-			target.m_vPosition = Vector(worldX, world.GetSurfaceY(worldX, worldZ), worldZ);
-			target.m_sSource = SOURCE;
-			target.m_sLabel = label;
+			target.targetKind = HMD_ETargetKind.MARKER;
+			target.vectorPosition = Vector(worldX, world.GetSurfaceY(worldX, worldZ), worldZ);
+			target.targetSource = SOURCE;
+			target.labelName = label;
 			outTargets.Insert(target);
 		}
 

@@ -15,14 +15,14 @@ enum HMD_ETargetKind{
 
 //! One symbol to draw. Filled by providers, consumed by HMD_Symbology.
 class HMD_Target{
-	vector m_vPosition;		//!< World position of the point
-	string m_sLabel;		//!< Short label drawn next to the symbol, e.g. the laser code or "WP3"
-	string m_sSource;		//!< Where it comes from, e.g. "LASER", shown on the target / nav line
-	HMD_ETargetKind m_eKind = HMD_ETargetKind.TARGET;
-	bool m_bMatched = true;	//!< TARGET only: true when the target belongs to us (code matches): green and blinking, else amber
-	bool m_bPrimary;		//!< The one target the target line (or, for waypoints, the nav line) describes
-	ref Color m_Color;		//!< Optional colour; null = default for the kind
-	float m_fRange;			//!< Filled by the display: distance from the aircraft in metres
+	vector vectorPosition;		//!< World position of the point
+	string labelName;			//!< Short label drawn next to the symbol, e.g. the laser code or "WP3"
+	string targetSource;		//!< Where it comes from, e.g. "LASER", shown on the target / nav line
+	HMD_ETargetKind targetKind = HMD_ETargetKind.TARGET;
+	bool codeMatched = true;		//!< TARGET only: true when the target belongs to us (code matches): green and blinking, else amber
+	bool isPrimary;			//!< The one target the target line (or, for waypoints, the nav line) describes
+	ref Color color;			//!< Optional colour; null = default for the kind
+	float filterRange;				//!< Filled by the display: distance from the aircraft in metres
 }
 
 //------------------------------------------------------------------------------------------------
