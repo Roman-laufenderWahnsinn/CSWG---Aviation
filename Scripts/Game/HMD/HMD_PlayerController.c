@@ -10,7 +10,8 @@ https://reforger.armaplatform.com/workshop/7BABD785CD00B3F6-HDTS-HelmetDisplay
 enum CSWG_HMD_Mode{
 	NAV, // 0, standart
 	DIM,  // 1,
-	MARKER
+	MARKER_DETAILS,
+	DISTANCE_ATAK_WP
 }
 
 modded class SCR_PlayerController{
@@ -149,20 +150,26 @@ modded class SCR_PlayerController{
 	}
 
 	void HMD_OnMenu(){
-		HMD_selectedOption = (HMD_selectedOption + 1) % 3;
+		HMD_selectedOption = (HMD_selectedOption + 1) % 4;
 		if(HMD_selectedOption == CSWG_HMD_Mode.NAV){
-			HMD_Hint("Naviagation Mode\nNUM1 <not used>\nNUM3 next Nav", "HMD");
+			HMD_Hint("Naviagation Mode\nNUM7 - next: dimming mode\nNUM1 - <not used>\nNUM3 - next Nav", "HMD");
+			// most likley will use NUM1 to switch NAV modes, like only wp, only jtac placed and so on, to give quick access to filtering
 			ref_HMDsymbology.SetOptionModeInfo("");
 			return;
 		}
 		if(HMD_selectedOption == CSWG_HMD_Mode.DIM){
-			HMD_Hint("Dimming Mode\nNUM1 dimmer/disable HUD\nNUM3 brighter HUD", "HMD");
+			HMD_Hint("Dimming Mode\nNUM7 - next: marker details mode\nNUM1 - dimmer/disable HUD\nNUM3 - brighter HUD", "HMD");
 			ref_HMDsymbology.SetOptionModeInfo("dimming");
 			return;
 		}
-		if(HMD_selectedOption == CSWG_HMD_Mode.MARKER){
-			HMD_Hint("Marker details Mode\nNUM1 less info HUD\nNUM3 more info", "HMD");
+		if(HMD_selectedOption == CSWG_HMD_Mode.MARKER_DETAILS){
+			HMD_Hint("Marker details Mode\nNUM7 - next: distance menu\nNUM1 - less info HUD\nNUM3 - more info", "HMD");
 			ref_HMDsymbology.SetOptionModeInfo("marker info");
+			return;
+		}
+		if(HMD_selectedOption == CSWG_HMD_Mode.DISTANCE_ATAK_WP){
+			HMD_Hint("View distance ATAK WP\nNUM7 - WIP\nNUM1 - decrase HUD\nNUM3 - increase", "ATAK WP view range");
+			ref_HMDsymbology.SetOptionModeInfo("atak wp view");
 			return;
 		}
 	}
@@ -182,7 +189,7 @@ modded class SCR_PlayerController{
 			ref_HMDsymbology.SetBrightness(HMD_Brightness);
 			return;
 		}
-		if(HMD_selectedOption == CSWG_HMD_Mode.MARKER){
+		if(HMD_selectedOption == CSWG_HMD_Mode.MARKER_DETAILS){
 			ref_HMDsymbology.markerDetail++;
 			if(ref_HMDsymbology.markerDetail > 2)
 				ref_HMDsymbology.markerDetail = 2;
@@ -201,7 +208,7 @@ modded class SCR_PlayerController{
 			ref_HMDsymbology.SetBrightness(HMD_Brightness);
 			return;
 		}
-		if(HMD_selectedOption == CSWG_HMD_Mode.MARKER){
+		if(HMD_selectedOption == CSWG_HMD_Mode.MARKER_DETAILS){
 			ref_HMDsymbology.markerDetail--;
 			if(ref_HMDsymbology.markerDetail < 0)
 				ref_HMDsymbology.markerDetail = 0;
