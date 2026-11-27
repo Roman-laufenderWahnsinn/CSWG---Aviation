@@ -1,7 +1,7 @@
 // Helper class for fuel calculation to display a remaining time on fuel
 
 class HMD_FuelComputer {
-	float lastFuelState;
+	protected float lastFuelState;
 	
 	void HMD_FuelComputer(notnull IEntity vehicle){
 		FuelManagerComponent fuelComp = FuelManagerComponent.Cast(vehicle.FindComponent(FuelManagerComponent));

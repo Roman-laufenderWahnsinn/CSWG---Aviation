@@ -15,24 +15,25 @@ enum CSWG_HMD_Mode{
 }
 
 modded class SCR_PlayerController{
-	static const string HMD_CONTEXT = "CSWG_HMD_Context";
-	static const string HMD_ACTION_MENU = "CSWG_HMD_Menu";
-	static const string HMD_ACTION_NEXT = "CSWG_HMD_Next";
-	static const string HMD_ACTION_OPTION = "CSWG_HMD_Option";
-	static const bool HMD_REQUIRE_HELMET = true;
-	static const float HMD_HINT_SECONDS = 4;
+	protected static const string HMD_CONTEXT = "CSWG_HMD_Context";
+	protected static const string HMD_ACTION_MENU = "CSWG_HMD_Menu";
+	protected static const string HMD_ACTION_NEXT = "CSWG_HMD_Next";
+	protected static const string HMD_ACTION_OPTION = "CSWG_HMD_Option";
+	protected static const bool HMD_REQUIRE_HELMET = true;
+	protected static const float HMD_HINT_SECONDS = 4;
 	
-	ref HMD_Symbology ref_HMDsymbology;
-	ref HMD_FuelComputer ref_FuelComputer;
-	bool HMD_FuelComputerInitaliced = false;
-	bool HMD_Enabled = true;
-	bool HMD_InputReady;
-	int HMD_Brightness = 10;
-	string HMD_NavSelection;
-	int HMD_selectedOption = 0;
+	protected ref HMD_Symbology ref_HMDsymbology;
+	protected ref HMD_FuelComputer ref_FuelComputer;
+	protected bool HMD_FuelComputerInitaliced = false;
+	protected bool HMD_Enabled = true;
+	protected bool HMD_InputReady;
+	protected int HMD_Brightness = 10;
+	protected string HMD_NavSelection;
+	protected int HMD_selectedOption = 0;
+	protected int HMD_markerDetail = 2;
 	
 	// option strings (so it is easier to give infos in hint)
-	ref array<string> markerDetailMode = {"No text on markers", "label only", "label and distance"};
+	protected ref array<string> markerDetailMode = {"No text on markers", "label only", "labeln and waypoint distance", "all label and distance"};
 	
 
 	override protected void OnInit(IEntity owner){
@@ -53,7 +54,7 @@ modded class SCR_PlayerController{
 		HMD_Tick(timeSlice);
 	}
 
-	void HMD_Tick(float timeSlice){
+	protected void HMD_Tick(float timeSlice){
 		IEntity vehicle;
 		VehicleHelicopterSimulation sim;
 		IEntity character;
@@ -95,7 +96,7 @@ modded class SCR_PlayerController{
 		ref_HMDsymbology.Update(vehicle, sim, timeSlice, ref_FuelComputer);
 	}
 
-	void HMD_DestroyDisplay(){
+	protected void HMD_DestroyDisplay(){
 		if (!ref_HMDsymbology)
 			return;
 
@@ -103,7 +104,7 @@ modded class SCR_PlayerController{
 		ref_HMDsymbology = null;
 	}
 
-	bool HMD_FindAircraft(out IEntity vehicle, out VehicleHelicopterSimulation sim, out IEntity character){
+	protected bool HMD_FindAircraft(out IEntity vehicle, out VehicleHelicopterSimulation sim, out IEntity character){
 		character = GetControlledEntity();
 		if (!character)
 			return false;
@@ -124,7 +125,7 @@ modded class SCR_PlayerController{
 		return sim != null;
 	}
 
-	bool HMD_HasHelmet(IEntity character){
+	protected bool HMD_HasHelmet(IEntity character){
 		if (!character)
 			return false;
 
@@ -135,7 +136,7 @@ modded class SCR_PlayerController{
 		return loadout.GetClothFromArea(LoadoutHeadCoverArea) != null;
 	}
 
-	void HMD_InitInput(){
+	protected void HMD_InitInput(){
 		if (HMD_InputReady)
 			return;
 
@@ -149,7 +150,7 @@ modded class SCR_PlayerController{
 		HMD_InputReady = true;
 	}
 
-	void HMD_OnMenu(){
+	protected void HMD_OnMenu(){
 		HMD_selectedOption = (HMD_selectedOption + 1) % 4;
 		if(HMD_selectedOption == CSWG_HMD_Mode.NAV){
 			HMD_Hint("Naviagation Mode\nNUM7 - next: dimming mode\nNUM1 - <not used>\nNUM3 - next Nav", "HMD");
@@ -174,10 +175,10 @@ modded class SCR_PlayerController{
 		}
 	}
 
-	void HMD_OnNext(){
+	protected void HMD_OnNext(){
 		if(HMD_selectedOption == CSWG_HMD_Mode.NAV){
 			ref_HMDsymbology.CycleNav();
-			HMD_Hint(ref_HMDsymbology.navSelectionText, "Nav/Mark selected");
+			HMD_Hint(ref_HMDsymbology.GetNavSelectionText(), "Nav/Mark selected");
 			return;
 		}
 		if(HMD_selectedOption == CSWG_HMD_Mode.DIM){
@@ -190,15 +191,16 @@ modded class SCR_PlayerController{
 			return;
 		}
 		if(HMD_selectedOption == CSWG_HMD_Mode.MARKER_DETAILS){
-			ref_HMDsymbology.markerDetail++;
-			if(ref_HMDsymbology.markerDetail > 2)
-				ref_HMDsymbology.markerDetail = 2;
-			HMD_Hint(markerDetailMode[ref_HMDsymbology.markerDetail], "Marker details setting");
+			HMD_markerDetail++;
+			if(HMD_markerDetail > 3)
+				HMD_markerDetail = 3;
+			ref_HMDsymbology.SetMarkerDeatailSetting(HMD_markerDetail);
+			HMD_Hint(markerDetailMode[HMD_markerDetail], "Marker details setting");
 			return;
 		}
 	}
 
-	void HMD_OnOption(){
+	protected void HMD_OnOption(){
 		if(HMD_selectedOption == CSWG_HMD_Mode.DIM){
 			HMD_Brightness--;
 			if(HMD_Brightness < 0){
@@ -209,19 +211,20 @@ modded class SCR_PlayerController{
 			return;
 		}
 		if(HMD_selectedOption == CSWG_HMD_Mode.MARKER_DETAILS){
-			ref_HMDsymbology.markerDetail--;
-			if(ref_HMDsymbology.markerDetail < 0)
-				ref_HMDsymbology.markerDetail = 0;
-			HMD_Hint(markerDetailMode[ref_HMDsymbology.markerDetail], "Marker details setting");
+			HMD_markerDetail--;
+			if(HMD_markerDetail < 0)
+				HMD_markerDetail = 0;
+			ref_HMDsymbology.SetMarkerDeatailSetting(HMD_markerDetail);
+			HMD_Hint(markerDetailMode[HMD_markerDetail], "Marker details setting");
 			return;
 		}
 	}
 
-	void HMD_Hint(string text, string title){
+	protected void HMD_Hint(string text, string title){
 		SCR_HintManagerComponent.ShowCustomHint(text, title, HMD_HINT_SECONDS);
 	}
 	
-	bool IsPlayerInGameMaster(){
+	protected bool IsPlayerInGameMaster(){
 	    SCR_EditorManagerEntity editorManager = SCR_EditorManagerEntity.GetInstance();
     	if (!editorManager)
         	return false;

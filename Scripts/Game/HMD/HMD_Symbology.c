@@ -12,95 +12,94 @@ https://reforger.armaplatform.com/workshop/7BABD785CD00B3F6-HDTS-HelmetDisplay
 */
 
 
-class HMD_Symbology : Managed
-{
-	static const ResourceName LAYOUT = "{61CE74373672265E}UI/Layouts/HUD/CSWG_HMD.layout";
-	static const ResourceName FPV_TEXTURE = "{621A8E584823A7CA}UI/Textures/HUD/VelocityMarker-100_atlas.edds";
+class HMD_Symbology : Managed{
+	protected static const ResourceName LAYOUT = "{61CE74373672265E}UI/Layouts/HUD/CSWG_HMD.layout";
+	protected static const ResourceName FPV_TEXTURE = "{621A8E584823A7CA}UI/Textures/HUD/VelocityMarker-100_atlas.edds";
 
 	//! Flip to -1 if the horizon line banks the wrong way on your installation
-	static const float ROLL_SIGN = 1;
+	protected static const float ROLL_SIGN = 1;
 
-	static const float MPS_TO_KT = 1.943844;
-	static const float M_TO_FT = 3.28084;
-	static const float MPS_TO_FPM = 196.8504;
-	static const float DEFAULT_VFOV_DEG = 74;
+	protected static const float MPS_TO_KT = 1.943844;
+	protected static const float M_TO_FT = 3.28084;
+	protected static const float MPS_TO_FPM = 196.8504;
+	protected static const float DEFAULT_VFOV_DEG = 74;
 
-	static const float LADDER_LIMIT_DEG = 34;
-	static const float HORIZON_HALF_WIDTH = 360;
-	static const float FPV_LIMIT_DEG = 22;
-	static const float SPEED_FLIGHT_MODE = 30;
-	static const float BLINK_PERIOD = 0.8;
+	protected static const float LADDER_LIMIT_DEG = 34;
+	protected static const float HORIZON_HALF_WIDTH = 360;
+	protected static const float FPV_LIMIT_DEG = 22;
+	protected static const float SPEED_FLIGHT_MODE = 30;
+	protected static const float BLINK_PERIOD = 0.8;
 
-	static const float LOW_ROTOR_PCT = 95;
-	static const float LOW_FUEL_PCT = 10;
-	static const float SINK_RATE_FPM = -1500;
-	static const float SINK_RATE_AGL_FT = 500;
-	static const float ALTITUDE_WARN_AGL_FT = 50;
-	static const float ALTITUDE_WARN_VSI_FPM = -200;
-	static const float MARKER_RANGE_FULL = 10000;
+	protected static const float LOW_ROTOR_PCT = 95;
+	protected static const float LOW_FUEL_PCT = 10;
+	protected static const float SINK_RATE_FPM = -1500;
+	protected static const float SINK_RATE_AGL_FT = 500;
+	protected static const float ALTITUDE_WARN_AGL_FT = 50;
+	protected static const float ALTITUDE_WARN_VSI_FPM = -200;
+	protected static const float MARKER_RANGE_FULL = 10000;
 
-	Widget wingetRoot;
-	Widget windgetFrame;
+	protected Widget wingetRoot;
+	protected Widget windgetFrame;
 
-	ImageWidget imgW_Horizon;
+	protected ImageWidget imgW_Horizon;
 
-	ImageWidget imgW_FPV;
+	protected ImageWidget imgW_FPV;
 
-	TextWidget textW_Airspeed;
-	TextWidget textW_AirspeedLabel;
-	TextWidget textW_GroundSpeed;
-	TextWidget textW_Altitude;
-	TextWidget textW_AltitudeLabel;
-	TextWidget textW_RadarAlt;
-	TextWidget textW_VSI;
-	TextWidget textW_Heading;
-	TextWidget textW_Rotor;
-	TextWidget textW_Fuel;
-	TextWidget textW_FuelTimer;
-	TextWidget textW_GForce;
-	TextWidget textW_Warning;
+	protected TextWidget textW_Airspeed;
+	protected TextWidget textW_AirspeedLabel;
+	protected TextWidget textW_GroundSpeed;
+	protected TextWidget textW_Altitude;
+	protected TextWidget textW_AltitudeLabel;
+	protected TextWidget textW_RadarAlt;
+	protected TextWidget textW_VSI;
+	protected TextWidget textW_Heading;
+	protected TextWidget textW_Rotor;
+	protected TextWidget textW_Fuel;
+	protected TextWidget textW_FuelTimer;
+	protected TextWidget textW_GForce;
+	protected TextWidget textW_Warning;
 
 	// Target designation
-	static const int TARGET_POOL = 12;
-	static const float TARGET_BLINK_PERIOD = 1.0;
-	ref array<ImageWidget> arrayImgW_TargetDiamonds = {};
-	ref array<TextWidget> arrayTextW_TargetLabels = {};
-	TextWidget textW_TargetLine;
-	ref array<ref HMD_Target> arrayHMD_Targets = {};
-	float float_TargetBlinkClock;
-	ref Color color_TargetMatched = new Color(0.35, 1, 0.45, 1);
-	ref Color color_TargetOther = new Color(1, 0.72, 0.24, 1);
-	TextWidget textW_NavLine;
-	ref array<ref HMD_Target> arrayHMD_TargetsOrdered = {};
-	ref Color color_Waypoint = new Color(1, 0.45, 1, 1);
-	static const float BASE_SYMBOL_SIZE = 32.0;
-	float pilotSymbolFactor = 1.0;
+	protected static const int TARGET_POOL = 12;
+	protected static const float TARGET_BLINK_PERIOD = 1.0;
+	protected ref array<ImageWidget> arrayImgW_TargetDiamonds = {};
+	protected ref array<TextWidget> arrayTextW_TargetLabels = {};
+	protected TextWidget textW_TargetLine;
+	protected ref array<ref HMD_Target> arrayHMD_Targets = {};
+	protected float float_TargetBlinkClock;
+	protected ref Color color_TargetMatched = new Color(0.35, 1, 0.45, 1);
+	protected ref Color color_TargetOther = new Color(1, 0.72, 0.24, 1);
+	protected TextWidget textW_NavLine;
+	protected ref array<ref HMD_Target> arrayHMD_TargetsOrdered = {};
+	protected ref Color color_Waypoint = new Color(1, 0.45, 1, 1);
+	protected static const float BASE_SYMBOL_SIZE = 32.0;
+	protected float pilotSymbolFactor = 1.0;
 	
 	// Camera frame of the current frame, filled by UpdateWorldSymbology and reused for target projection
-	bool cameraValid;
-	vector vec_CamPos;
-	vector vec_CamRight;
-	vector vec_CamUp;
-	vector vec_CamForward;
-	float cameraFocal;
-	float debug_TargetDebugClock;
+	protected bool cameraValid;
+	protected vector vec_CamPos;
+	protected vector vec_CamRight;
+	protected vector vec_CamUp;
+	protected vector vec_CamForward;
+	protected float cameraFocal;
+	protected float debug_TargetDebugClock;
 	
 	// Nav selection: key of the waypoint/marker the pilot picked with the cycle key, empty = provider default
-	string navSelection;
-	string navSelectionText = "NAV: AUTO";
-	ref array<string> navKeysArray = {};
+	protected string navSelection;
+	protected string navSelectionText = "NAV: AUTO";
+	protected ref array<string> navKeysArray = {};
 
-	float renderTargetWidth;
-	float renderTargetHeigth;
-	float screenCenterX;
-	float screenCenterY;
+	protected float renderTargetWidth;
+	protected float renderTargetHeigth;
+	protected float screenCenterX;
+	protected float screenCenterY;
 
-	int brightessHMD = 10;
-	float blinkClockCounter;
-	bool layoutIsDirty = true;
-	WorldTimestamp lastTimestampFuelUpdate;
-	string optionMode = "";
-	int markerDetail = 2;
+	protected int brightessHMD = 10;
+	protected float blinkClockCounter;
+	protected bool layoutIsDirty = true;
+	protected WorldTimestamp lastTimestampFuelUpdate;
+	protected string optionMode = "";
+	protected int markerDetail = 2;
 
 	void HMD_Symbology(){
 		WorkspaceWidget workspace = GetGame().GetWorkspace();
@@ -155,6 +154,18 @@ class HMD_Symbology : Managed
 	string GetNavSelectionText(){
 		return navSelectionText;
 	}
+	
+	void SetMarkerDeatailSetting(int markerDetailSetting){
+		markerDetail = Math.ClampInt(markerDetailSetting, 0, 3);
+	}
+	
+	int GetMarkerDetailSetting(){
+		return markerDetail;
+	}
+	
+	void SetOptionModeInfo(string optionModeNew){
+		optionMode = optionModeNew;
+	}
 
 	string CycleNav(){
 		int count = navKeysArray.Count();
@@ -191,7 +202,7 @@ class HMD_Symbology : Managed
 		return target.targetSource + "|" + target.labelName + "|" + Math.Round(p[0]).ToString() + "/" + Math.Round(p[2]).ToString();
 	}
 
-	void ApplyBrightness(){
+	protected void ApplyBrightness(){
 		if (!wingetRoot)
 			return;
 		if(brightessHMD > 10.0)
@@ -199,7 +210,7 @@ class HMD_Symbology : Managed
 		wingetRoot.SetOpacity(brightessHMD/10.0);
 	}
 
-	void CacheWidgets(){
+	protected void CacheWidgets(){
 		windgetFrame = wingetRoot.FindAnyWidget("Frame");
 		imgW_Horizon = ImageWidget.Cast(wingetRoot.FindAnyWidget("Horizon"));
 		imgW_FPV = ImageWidget.Cast(wingetRoot.FindAnyWidget("FPVimg"));
@@ -232,7 +243,7 @@ class HMD_Symbology : Managed
 			imgW_FPV.LoadImageTexture(0, FPV_TEXTURE); 
 	}
 
-	void UpdateScreenMetrics(){
+	protected void UpdateScreenMetrics(){
 		WorkspaceWidget workspace = GetGame().GetWorkspace();
 		if (!workspace)
 			return;
@@ -253,7 +264,7 @@ class HMD_Symbology : Managed
 		LayoutStatic();
 	}
 
-	void LayoutStatic(){
+	protected void LayoutStatic(){
 		if (windgetFrame){
 			FrameSlot.SetPos(windgetFrame, 0, 0);
 			FrameSlot.SetSize(windgetFrame, renderTargetWidth, renderTargetHeigth);
@@ -296,7 +307,7 @@ class HMD_Symbology : Managed
 			FrameSlot.SetSize(imgW_Horizon, HORIZON_HALF_WIDTH * 2, 2);
 	}
 
-	void Place(Widget w, float x, float y, float width, float height){
+	protected void Place(Widget w, float x, float y, float width, float height){
 		if (!w)
 			return;
 
@@ -304,12 +315,12 @@ class HMD_Symbology : Managed
 		FrameSlot.SetPos(w, x - width * 0.5, y - height * 0.5);
 	}
 
-	void Show(Widget w, bool visible){
+	protected void Show(Widget w, bool visible){
 		if (w)
 			w.SetVisible(visible);
 	}
 
-	void SetText(TextWidget w, string text){
+	protected void SetText(TextWidget w, string text){
 		if (w)
 			w.SetText(text);
 	}
@@ -416,7 +427,7 @@ class HMD_Symbology : Managed
 		UpdateTargets(vehicle, heading, groundKt, timeSlice);
 	}
 	
-	string GetWarningMessage(bool engineOn, float rotorPct, float vsiFpm, float aglFt, float fuelPct, bool airborne){
+	protected string GetWarningMessage(bool engineOn, float rotorPct, float vsiFpm, float aglFt, float fuelPct, bool airborne){
 		if (airborne && !engineOn)
 			return "ENGINE OFF";
 	
@@ -438,7 +449,7 @@ class HMD_Symbology : Managed
 		return string.Empty;
 	}
 
-	void UpdateWorldSymbology(vector velocity, float speedIAS){
+	protected void UpdateWorldSymbology(vector velocity, float speedIAS){
 		CameraManager cameraManager = GetGame().GetCameraManager();
 		CameraBase camera;
 		if (cameraManager)
@@ -511,7 +522,7 @@ class HMD_Symbology : Managed
 		}
 	}
 
-	void UpdateTargets(notnull IEntity vehicle, float ownHeading, float groundKt, float timeSlice){
+	protected void UpdateTargets(notnull IEntity vehicle, float ownHeading, float groundKt, float timeSlice){
 		int count = 0;
 		if (HMD_TargetRegistry.Count() > 0)
 			count = HMD_TargetRegistry.Collect(vehicle, arrayHMD_Targets);
@@ -675,12 +686,18 @@ class HMD_Symbology : Managed
 
 			FrameSlot.SetSize(symbol, size, size);
 			FrameSlot.SetPos(symbol, screen[0] - halfSize, screen[1] - halfSize);
-			if(markerDetail == 2)
-				label.SetText(target.labelName + "  " + FormatRange(target.filterRange));
-			else if(markerDetail == 1)
-				label.SetText(target.labelName + "  ");
-			else
+			if (markerDetail <= 0){
 				label.SetText("");
+			}else if (markerDetail == 1){
+				label.SetText(target.labelName + "  ");
+			}else if (markerDetail == 2){
+				if (target.targetKind == HMD_ETargetKind.WAYPOINT)
+					label.SetText(target.labelName + "  " + FormatRange(target.filterRange));
+				else
+					label.SetText(target.labelName + "  ");
+			}else{
+				label.SetText(target.labelName + "  " + FormatRange(target.filterRange));
+			}
 			FrameSlot.SetPos(label, screen[0] + halfSize + 6, screen[1] - 11);
 		}
 
@@ -736,7 +753,7 @@ class HMD_Symbology : Managed
 		}
 	}
 
-	void HideTargets(){
+	protected void HideTargets(){
 		for (int i = 0; i < TARGET_POOL; i++){
 			Show(arrayImgW_TargetDiamonds[i], false);
 			Show(arrayTextW_TargetLabels[i], false);
@@ -745,7 +762,7 @@ class HMD_Symbology : Managed
 		Show(textW_NavLine, false);
 	}
 	
-	static int CompareTargets(notnull HMD_Target a, notnull HMD_Target b){
+	protected static int CompareTargets(notnull HMD_Target a, notnull HMD_Target b){
 		if (a.targetKind != b.targetKind)
 			return a.targetKind - b.targetKind;
 
@@ -756,7 +773,7 @@ class HMD_Symbology : Managed
 		return 0;
 	}
 
-	static string FormatBearing(vector from, vector to, float ownHeading)	{
+	protected static string FormatBearing(vector from, vector to, float ownHeading)	{
 		float bearing = GetBearingDeg(from, to);
 		float relative = bearing - ownHeading;
 		while (relative > 180)
@@ -771,7 +788,7 @@ class HMD_Symbology : Managed
 		return string.Format("BRG %1  %2%3", Math.Round(bearing).ToString(3,0), side, Math.Round(Math.AbsFloat(relative)).ToString());
 	}
 
-	static string FormatEte(float seconds){
+	protected static string FormatEte(float seconds){
 		int total = Math.Round(seconds);
 		if (total < 3600)
 			return (total / 60).ToString() + ":" + (total % 60).ToString(2);
@@ -779,14 +796,14 @@ class HMD_Symbology : Managed
 		return "N.A.";
 	}
 
-	static string FormatRange(float metres)	{
+	protected static string FormatRange(float metres)	{
 		if (metres < 1000)
 			return Math.Round(metres).ToString() + " M";
 
 		return (Math.Round(metres / 100) / 10).ToString(1, 1) + " KM";
 	}
 
-	static float GetBearingDeg(vector from, vector to){
+	protected static float GetBearingDeg(vector from, vector to){
 		vector delta = to - from;
 		float bearing = Math.Atan2(delta[0], delta[2]) * Math.RAD2DEG;
 		while (bearing < 0)
@@ -796,17 +813,17 @@ class HMD_Symbology : Managed
 		return bearing;
 	}
 
-	void ShowWorldSymbology(bool horizon, bool ladder, bool fpv){
+	protected void ShowWorldSymbology(bool horizon, bool ladder, bool fpv){
 		Show(imgW_Horizon, horizon);
 		Show(imgW_FPV, fpv);
 	}
 
-	float ElevationToPixels(float elevationDeg, float camPitchDeg, float focal){
+	protected float ElevationToPixels(float elevationDeg, float camPitchDeg, float focal){
 		float delta = Math.Clamp(elevationDeg - camPitchDeg, -80, 80);
 		return Math.Tan(delta * Math.DEG2RAD) * focal;
 	}
 
-	static float GetHeadingDeg(notnull IEntity fallbackEntity){
+	protected static float GetHeadingDeg(notnull IEntity fallbackEntity){
 		vector forward;
 		BaseWorld world = fallbackEntity.GetWorld();
 		
@@ -831,7 +848,7 @@ class HMD_Symbology : Managed
 		return heading;
 	}
 	
-	static string GetCardinalDirection8(float headingDeg){
+	protected static string GetCardinalDirection8(float headingDeg){
 		static const string DIRS[8] = {"N", "NE", "E", "SE", "S", "SW", "W", "NW"};
 	
 		float normalized = headingDeg;
@@ -844,12 +861,8 @@ class HMD_Symbology : Managed
 		return DIRS[index % 8];
 	}
 	
-	void SetOptionModeInfo(string optionModeNew){
-		optionMode = optionModeNew;
-	}
-	
 	//! Applies target icon texture/quad when provided, or keeps standard geometric symbol rendering
-	void ApplyTargetSymbolVisual(notnull ImageWidget symbol, notnull HMD_Target target, notnull Color fallbackColor, float defaultRotation){
+	protected void ApplyTargetSymbolVisual(notnull ImageWidget symbol, notnull HMD_Target target, notnull Color fallbackColor, float defaultRotation){
 		if (target.HasIconTexture()){
 			if (!target.iconQuad.IsEmpty()){
 				symbol.LoadImageFromSet(0, target.iconTexture, target.iconQuad);
