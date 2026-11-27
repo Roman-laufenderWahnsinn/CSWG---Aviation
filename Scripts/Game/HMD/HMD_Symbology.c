@@ -29,7 +29,7 @@ class HMD_Symbology : Managed{
 	protected static const float HORIZON_HALF_WIDTH = 360;
 	protected static const float FPV_LIMIT_DEG = 22;
 	protected static const float SPEED_FLIGHT_MODE = 20;
-	protected static const float HOVER_DRIFT_PX_PER_MPS = 4.0;
+	protected static const float HOVER_DRIFT_PX_PER_MPS = 8.0;
 	protected static const float BLINK_PERIOD = 0.8;
 
 	protected static const float LOW_ROTOR_PCT = 95;
@@ -175,7 +175,7 @@ class HMD_Symbology : Managed{
 		int count = navKeysArray.Count();
 		if (count == 0){
 			navSelection = string.Empty;
-			navSelectionText = "NAV: AUTO (no waypoints or markers in view)";
+			navSelectionText = "NAV: AUTO (no waypoints in view)";
 			Print(navSelectionText);
 			return navSelection;
 		}
@@ -253,9 +253,9 @@ class HMD_Symbology : Managed{
 		if(imgW_FPV)
 			imgW_FPV.LoadImageTexture(0, FPV_TEXTURE);
 		if (imgW_Hover_Circle)
-			imgW_Hover_Circle.LoadImageFromSet(0, VANILLA_MAP_MARKERS, "circle");
+			imgW_Hover_Circle.LoadImageFromSet(0, VANILLA_MAP_MARKERS, "circle-2");
 		if (imgW_Hover_Point)
-			imgW_Hover_Point.LoadImageFromSet(0, VANILLA_MAP_MARKERS, "dot"); 
+			imgW_Hover_Point.LoadImageFromSet(0, VANILLA_MAP_MARKERS, "dot-2"); 
 	}
 
 	protected void UpdateScreenMetrics(){
@@ -290,7 +290,7 @@ class HMD_Symbology : Managed{
 
 		Place(imgW_FPV, screenCenterX, screenCenterY, 48, 48);
 		Place(imgW_Hover_Circle, screenCenterX, screenCenterY+200, 128, 128);
-		Place(imgW_Hover_Point, screenCenterX, screenCenterY+200, 192, 192);
+		Place(imgW_Hover_Point, screenCenterX, screenCenterY+200, 128, 128);
 
 		Place(textW_Airspeed, left, screenCenterY - 10, 120, 40);
 		Place(textW_AirspeedLabel, left, screenCenterY - 38, 120, 22);
@@ -546,8 +546,8 @@ class HMD_Symbology : Managed{
 			if (hoverVisible){
 				float hoverCenterX = screenCenterX;
 				float hoverCenterY = screenCenterY + 200;
-				float pointSize = 192.0;
-				float maxOffset = 64.0; // Radius von Hover_Circle (128 / 2)
+				float pointSize = 128.0;
+				float maxOffset = 128.0;
 
 				float dx = velocityLocal[0] * HOVER_DRIFT_PX_PER_MPS;
 				float dy = -velocityLocal[2] * HOVER_DRIFT_PX_PER_MPS;
@@ -619,7 +619,7 @@ class HMD_Symbology : Managed{
 		navKeysArray.Clear();
 		HMD_Target selected;
 		foreach (HMD_Target candidate : arrayHMD_TargetsOrdered){
-			if (candidate.targetKind == HMD_ETargetKind.TARGET)
+			if (candidate.targetKind != HMD_ETargetKind.WAYPOINT)
 				continue;
 			string key = NavKey(candidate);
 			navKeysArray.Insert(key);
@@ -741,7 +741,7 @@ class HMD_Symbology : Managed{
 				label.SetText(target.labelName + "  " + FormatRange(target.filterRange));
 			}
 			float labelWidth = 260;
-			float labelGap = -8;
+			float labelGap = 0;
 			FrameSlot.SetSize(label, labelWidth, 14);
 			FrameSlot.SetPos(label, screen[0] - labelWidth * 0.5, screen[1] + halfSize + labelGap);
 		}
