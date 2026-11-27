@@ -5,13 +5,14 @@ This is on adjusted version form the original "HDTS - Helmet Display" Mod on ste
 https://reforger.armaplatform.com/workshop/7BABD785CD00B3F6-HDTS-HelmetDisplay
 
 - Changed keybinds (to stay compatible with ACM) and reduced to 3
+- added options to dimm (0-10)
 */
 
 enum CSWG_HMD_Mode{
-	NAV, // 0, standart
-	DIM,  // 1,
-	MARKER_DETAILS,
-	DISTANCE_ATAK_WP
+	NAV,
+	DIM,
+	ATAK_SHOW_HIDE,
+	CTG_VANILLA_SHOW_HIDE
 }
 
 modded class SCR_PlayerController{
@@ -153,24 +154,24 @@ modded class SCR_PlayerController{
 	protected void HMD_OnMenu(){
 		HMD_selectedOption = (HMD_selectedOption + 1) % 4;
 		if(HMD_selectedOption == CSWG_HMD_Mode.NAV){
-			HMD_Hint("Naviagation Mode\nNUM7 - next: dimming mode\nNUM1 - <not used>\nNUM3 - next Nav", "HMD");
+			HMD_Hint("Naviagation\nNUM7 - next: dimming\nNUM1 - cycle details\nNUM3 - select next for navigation", "HMD");
 			// most likley will use NUM1 to switch NAV modes, like only wp, only jtac placed and so on, to give quick access to filtering
 			ref_HMDsymbology.SetOptionModeInfo("");
 			return;
 		}
 		if(HMD_selectedOption == CSWG_HMD_Mode.DIM){
-			HMD_Hint("Dimming Mode\nNUM7 - next: marker details mode\nNUM1 - dimmer/disable HUD\nNUM3 - brighter HUD", "HMD");
+			HMD_Hint("Dimming\nNUM7 - next: ATAK show/hide\nNUM1 - dimmer/disable HUD\nNUM3 - brighter HUD", "HMD");
 			ref_HMDsymbology.SetOptionModeInfo("dimming");
 			return;
 		}
-		if(HMD_selectedOption == CSWG_HMD_Mode.MARKER_DETAILS){
-			HMD_Hint("Marker details Mode\nNUM7 - next: distance menu\nNUM1 - less info HUD\nNUM3 - more info", "HMD");
-			ref_HMDsymbology.SetOptionModeInfo("marker info");
+		if(HMD_selectedOption == CSWG_HMD_Mode.ATAK_SHOW_HIDE){
+			HMD_Hint("ATAK show/hide\nNUM7 - next: Map and CTG show/hide\nNUM1 - show/hide waypoints\nNUM3 - show/hide markers", "HMD");
+			ref_HMDsymbology.SetOptionModeInfo("atak show/hide");
 			return;
 		}
-		if(HMD_selectedOption == CSWG_HMD_Mode.DISTANCE_ATAK_WP){
-			HMD_Hint("View distance ATAK WP\nNUM7 - WIP\nNUM1 - decrase HUD\nNUM3 - increase", "ATAK WP view range");
-			ref_HMDsymbology.SetOptionModeInfo("atak wp view");
+		if(HMD_selectedOption == CSWG_HMD_Mode.CTG_VANILLA_SHOW_HIDE){
+			HMD_Hint("Map and CTG show/hide\nNUM7 - next:Naviagtion\nNUM1 - show/hide map markers HUD\nNUM3 - show/hide CTG markers", "ATAK WP view range");
+			ref_HMDsymbology.SetOptionModeInfo("map+ctg show/hide");
 			return;
 		}
 	}
@@ -190,17 +191,15 @@ modded class SCR_PlayerController{
 			ref_HMDsymbology.SetBrightness(HMD_Brightness);
 			return;
 		}
-		if(HMD_selectedOption == CSWG_HMD_Mode.MARKER_DETAILS){
-			HMD_markerDetail++;
-			if(HMD_markerDetail > 3)
-				HMD_markerDetail = 3;
+	}
+
+	protected void HMD_OnOption(){
+		if(HMD_selectedOption == CSWG_HMD_Mode.NAV){
+			HMD_markerDetail = (HMD_markerDetail + 1) % 4;
 			ref_HMDsymbology.SetMarkerDeatailSetting(HMD_markerDetail);
 			HMD_Hint(markerDetailMode[HMD_markerDetail], "Marker details setting");
 			return;
 		}
-	}
-
-	protected void HMD_OnOption(){
 		if(HMD_selectedOption == CSWG_HMD_Mode.DIM){
 			HMD_Brightness--;
 			if(HMD_Brightness < 0){
@@ -210,14 +209,7 @@ modded class SCR_PlayerController{
 			ref_HMDsymbology.SetBrightness(HMD_Brightness);
 			return;
 		}
-		if(HMD_selectedOption == CSWG_HMD_Mode.MARKER_DETAILS){
-			HMD_markerDetail--;
-			if(HMD_markerDetail < 0)
-				HMD_markerDetail = 0;
-			ref_HMDsymbology.SetMarkerDeatailSetting(HMD_markerDetail);
-			HMD_Hint(markerDetailMode[HMD_markerDetail], "Marker details setting");
-			return;
-		}
+		
 	}
 
 	protected void HMD_Hint(string text, string title){

@@ -62,7 +62,7 @@ class HMD_Symbology : Managed{
 	// Target designation
 	protected static const int TARGET_POOL = 12;
 	protected static const float TARGET_BLINK_PERIOD = 1.0;
-	protected ref array<ImageWidget> arrayImgW_TargetDiamonds = {};
+	protected ref array<ImageWidget> arrayImgW_TargetMarkers = {};
 	protected ref array<TextWidget> arrayTextW_TargetLabels = {};
 	protected TextWidget textW_TargetLine;
 	protected ref array<ref HMD_Target> arrayHMD_Targets = {};
@@ -230,14 +230,19 @@ class HMD_Symbology : Managed{
 		textW_TargetLine = TextWidget.Cast(wingetRoot.FindAnyWidget("TargetLine"));
 		textW_NavLine = TextWidget.Cast(wingetRoot.FindAnyWidget("NavLine"));
 		
-		arrayImgW_TargetDiamonds.Clear();
+		arrayImgW_TargetMarkers.Clear();
 		arrayTextW_TargetLabels.Clear();
 		for (int i = 0; i < TARGET_POOL; i++){
-			ImageWidget diamond = ImageWidget.Cast(wingetRoot.FindAnyWidget("Target" + i));
-			if (diamond)
-				diamond.SetRotation(45);
-			arrayImgW_TargetDiamonds.Insert(diamond);
-			arrayTextW_TargetLabels.Insert(TextWidget.Cast(wingetRoot.FindAnyWidget("TargetLabel" + i)));
+			ImageWidget marker = ImageWidget.Cast(wingetRoot.FindAnyWidget("Target" + i));
+			if (marker)
+				marker.SetRotation(45);
+			arrayImgW_TargetMarkers.Insert(marker);
+			TextWidget targetLabel = TextWidget.Cast(wingetRoot.FindAnyWidget("TargetLabel" + i));
+			if (targetLabel){
+				targetLabel.SetExactFontSize(12);
+				targetLabel.SetTextWrapping(false);
+			}
+			arrayTextW_TargetLabels.Insert(targetLabel);
 		}
 		if(imgW_FPV)
 			imgW_FPV.LoadImageTexture(0, FPV_TEXTURE); 
@@ -273,7 +278,7 @@ class HMD_Symbology : Managed{
 		float left = screenCenterX - 330;
 		float right = screenCenterX + 330;
 
-		Place(imgW_FPV, screenCenterX, screenCenterY, 64, 64);
+		Place(imgW_FPV, screenCenterX, screenCenterY, 48, 48);
 
 		Place(textW_Airspeed, left, screenCenterY - 10, 120, 40);
 		Place(textW_AirspeedLabel, left, screenCenterY - 38, 120, 22);
@@ -296,9 +301,9 @@ class HMD_Symbology : Managed{
 		Place(textW_TargetLine, screenCenterX, screenCenterY - 190, 520, 24);
 		Place(textW_NavLine, screenCenterX, screenCenterY + 252, 520, 22);
 
-		for (int i = 0; i < arrayImgW_TargetDiamonds.Count(); i++){
-			if (arrayImgW_TargetDiamonds[i])
-				FrameSlot.SetSize(arrayImgW_TargetDiamonds[i], BASE_SYMBOL_SIZE, BASE_SYMBOL_SIZE);
+		for (int i = 0; i < arrayImgW_TargetMarkers.Count(); i++){
+			if (arrayImgW_TargetMarkers[i])
+				FrameSlot.SetSize(arrayImgW_TargetMarkers[i], BASE_SYMBOL_SIZE, BASE_SYMBOL_SIZE);
 			if (arrayTextW_TargetLabels[i])
 				FrameSlot.SetSize(arrayTextW_TargetLabels[i], 260, 22);
 		}
@@ -620,7 +625,7 @@ class HMD_Symbology : Managed{
 			if (shown >= TARGET_POOL)
 				break;
 
-			ImageWidget symbol = arrayImgW_TargetDiamonds[shown];
+			ImageWidget symbol = arrayImgW_TargetMarkers[shown];
 			TextWidget label = arrayTextW_TargetLabels[shown];
 			shown++;
 			if (!symbol || !label)
@@ -698,11 +703,14 @@ class HMD_Symbology : Managed{
 			}else{
 				label.SetText(target.labelName + "  " + FormatRange(target.filterRange));
 			}
-			FrameSlot.SetPos(label, screen[0] + halfSize + 6, screen[1] - 11);
+			float labelWidth = 260;
+			float labelGap = -8;
+			FrameSlot.SetSize(label, labelWidth, 14);
+			FrameSlot.SetPos(label, screen[0] - labelWidth * 0.5, screen[1] + halfSize + labelGap);
 		}
 
 		for (int i = shown; i < TARGET_POOL; i++){
-			Show(arrayImgW_TargetDiamonds[i], false);
+			Show(arrayImgW_TargetMarkers[i], false);
 			Show(arrayTextW_TargetLabels[i], false);
 		}
 
@@ -755,7 +763,7 @@ class HMD_Symbology : Managed{
 
 	protected void HideTargets(){
 		for (int i = 0; i < TARGET_POOL; i++){
-			Show(arrayImgW_TargetDiamonds[i], false);
+			Show(arrayImgW_TargetMarkers[i], false);
 			Show(arrayTextW_TargetLabels[i], false);
 		}
 		Show(textW_TargetLine, false);
@@ -880,7 +888,7 @@ class HMD_Symbology : Managed{
 			return;
 		}
 
-		// Default geometric symbol (diamond / square)
+		// Default geometric symbol (marker / square)
 		symbol.SetRotation(defaultRotation);
 		symbol.SetColor(fallbackColor);
 	}

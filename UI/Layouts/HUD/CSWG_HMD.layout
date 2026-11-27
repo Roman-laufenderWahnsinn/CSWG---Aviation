@@ -221,7 +221,7 @@ OverlayWidgetClass {
      Text ""
      "Font Size" 16
      "Min Font Size" 16
-     "Horizontal Alignment" Left
+     "Horizontal Alignment" Center
      "Vertical Alignment" Center
      FontProperties FontProperties "{5752C47600000084}" {
       Font "{EABA4FE9D014CCEF}UI/Fonts/RobotoCondensed/RobotoCondensed_Bold.fnt"
@@ -243,7 +243,7 @@ OverlayWidgetClass {
      Text ""
      "Font Size" 16
      "Min Font Size" 16
-     "Horizontal Alignment" Left
+     "Horizontal Alignment" Center
      "Vertical Alignment" Center
      FontProperties FontProperties "{5752C47600000089}" {
       Font "{EABA4FE9D014CCEF}UI/Fonts/RobotoCondensed/RobotoCondensed_Bold.fnt"
@@ -265,7 +265,7 @@ OverlayWidgetClass {
      Text ""
      "Font Size" 16
      "Min Font Size" 16
-     "Horizontal Alignment" Left
+     "Horizontal Alignment" Center
      "Vertical Alignment" Center
      FontProperties FontProperties "{5752C4760000008E}" {
       Font "{EABA4FE9D014CCEF}UI/Fonts/RobotoCondensed/RobotoCondensed_Bold.fnt"
@@ -287,7 +287,7 @@ OverlayWidgetClass {
      Text ""
      "Font Size" 16
      "Min Font Size" 16
-     "Horizontal Alignment" Left
+     "Horizontal Alignment" Center
      "Vertical Alignment" Center
      FontProperties FontProperties "{5752C47600000093}" {
       Font "{EABA4FE9D014CCEF}UI/Fonts/RobotoCondensed/RobotoCondensed_Bold.fnt"
@@ -325,7 +325,7 @@ OverlayWidgetClass {
      Text ""
      "Font Size" 16
      "Min Font Size" 16
-     "Horizontal Alignment" Left
+     "Horizontal Alignment" Center
      "Vertical Alignment" Center
      FontProperties FontProperties "{5752C476000000A4}" {
       Font "{EABA4FE9D014CCEF}UI/Fonts/RobotoCondensed/RobotoCondensed_Bold.fnt"
@@ -347,7 +347,7 @@ OverlayWidgetClass {
      Text ""
      "Font Size" 16
      "Min Font Size" 16
-     "Horizontal Alignment" Left
+     "Horizontal Alignment" Center
      "Vertical Alignment" Center
      FontProperties FontProperties "{5752C476000000A9}" {
       Font "{EABA4FE9D014CCEF}UI/Fonts/RobotoCondensed/RobotoCondensed_Bold.fnt"
@@ -369,7 +369,7 @@ OverlayWidgetClass {
      Text ""
      "Font Size" 16
      "Min Font Size" 16
-     "Horizontal Alignment" Left
+     "Horizontal Alignment" Center
      "Vertical Alignment" Center
      FontProperties FontProperties "{5752C476000000AE}" {
       Font "{EABA4FE9D014CCEF}UI/Fonts/RobotoCondensed/RobotoCondensed_Bold.fnt"
@@ -391,7 +391,7 @@ OverlayWidgetClass {
      Text ""
      "Font Size" 16
      "Min Font Size" 16
-     "Horizontal Alignment" Left
+     "Horizontal Alignment" Center
      "Vertical Alignment" Center
      FontProperties FontProperties "{5752C476000000B3}" {
       Font "{EABA4FE9D014CCEF}UI/Fonts/RobotoCondensed/RobotoCondensed_Bold.fnt"
@@ -413,7 +413,7 @@ OverlayWidgetClass {
      Text ""
      "Font Size" 16
      "Min Font Size" 16
-     "Horizontal Alignment" Left
+     "Horizontal Alignment" Center
      "Vertical Alignment" Center
      FontProperties FontProperties "{5752C476000000B8}" {
       Font "{EABA4FE9D014CCEF}UI/Fonts/RobotoCondensed/RobotoCondensed_Bold.fnt"
@@ -435,7 +435,7 @@ OverlayWidgetClass {
      Text ""
      "Font Size" 16
      "Min Font Size" 16
-     "Horizontal Alignment" Left
+     "Horizontal Alignment" Center
      "Vertical Alignment" Center
      FontProperties FontProperties "{5752C476000000BD}" {
       Font "{EABA4FE9D014CCEF}UI/Fonts/RobotoCondensed/RobotoCondensed_Bold.fnt"
@@ -457,7 +457,7 @@ OverlayWidgetClass {
      Text ""
      "Font Size" 16
      "Min Font Size" 16
-     "Horizontal Alignment" Left
+     "Horizontal Alignment" Center
      "Vertical Alignment" Center
      FontProperties FontProperties "{5752C476000000C2}" {
       Font "{EABA4FE9D014CCEF}UI/Fonts/RobotoCondensed/RobotoCondensed_Bold.fnt"
@@ -479,7 +479,7 @@ OverlayWidgetClass {
      Text ""
      "Font Size" 16
      "Min Font Size" 16
-     "Horizontal Alignment" Left
+     "Horizontal Alignment" Center
      "Vertical Alignment" Center
      FontProperties FontProperties "{5752C476000000C7}" {
       Font "{EABA4FE9D014CCEF}UI/Fonts/RobotoCondensed/RobotoCondensed_Bold.fnt"
