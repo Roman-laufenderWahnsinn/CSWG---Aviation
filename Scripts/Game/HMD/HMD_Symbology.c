@@ -15,6 +15,7 @@ https://reforger.armaplatform.com/workshop/7BABD785CD00B3F6-HDTS-HelmetDisplay
 class HMD_Symbology : Managed{
 	protected static const ResourceName LAYOUT = "{61CE74373672265E}UI/Layouts/HUD/CSWG_HMD.layout";
 	protected static const ResourceName FPV_TEXTURE = "{621A8E584823A7CA}UI/Textures/HUD/VelocityMarker-100_atlas.edds";
+	protected static const ResourceName VANILLA_MAP_MARKERS = "{E23427CAC80DA8B7}UI/Textures/Icons/icons_mapMarkersUI.imageset"; // used for hover circle
 
 	//! Flip to -1 if the horizon line banks the wrong way on your installation
 	protected static const float ROLL_SIGN = 1;
@@ -27,7 +28,8 @@ class HMD_Symbology : Managed{
 	protected static const float LADDER_LIMIT_DEG = 34;
 	protected static const float HORIZON_HALF_WIDTH = 360;
 	protected static const float FPV_LIMIT_DEG = 22;
-	protected static const float SPEED_FLIGHT_MODE = 30;
+	protected static const float SPEED_FLIGHT_MODE = 20;
+	protected static const float HOVER_DRIFT_PX_PER_MPS = 4.0;
 	protected static const float BLINK_PERIOD = 0.8;
 
 	protected static const float LOW_ROTOR_PCT = 95;
@@ -44,6 +46,8 @@ class HMD_Symbology : Managed{
 	protected ImageWidget imgW_Horizon;
 
 	protected ImageWidget imgW_FPV;
+	protected ImageWidget imgW_Hover_Circle;
+	protected ImageWidget imgW_Hover_Point;
 
 	protected TextWidget textW_Airspeed;
 	protected TextWidget textW_AirspeedLabel;
@@ -214,6 +218,8 @@ class HMD_Symbology : Managed{
 		windgetFrame = wingetRoot.FindAnyWidget("Frame");
 		imgW_Horizon = ImageWidget.Cast(wingetRoot.FindAnyWidget("Horizon"));
 		imgW_FPV = ImageWidget.Cast(wingetRoot.FindAnyWidget("FPVimg"));
+		imgW_Hover_Circle = ImageWidget.Cast(wingetRoot.FindAnyWidget("Hover_Circle"));
+		imgW_Hover_Point = ImageWidget.Cast(wingetRoot.FindAnyWidget("Hover_Point"));
 		textW_Airspeed = TextWidget.Cast(wingetRoot.FindAnyWidget("Airspeed"));
 		textW_AirspeedLabel = TextWidget.Cast(wingetRoot.FindAnyWidget("AirspeedLabel"));
 		textW_GroundSpeed = TextWidget.Cast(wingetRoot.FindAnyWidget("GroundSpeed"));
@@ -245,7 +251,11 @@ class HMD_Symbology : Managed{
 			arrayTextW_TargetLabels.Insert(targetLabel);
 		}
 		if(imgW_FPV)
-			imgW_FPV.LoadImageTexture(0, FPV_TEXTURE); 
+			imgW_FPV.LoadImageTexture(0, FPV_TEXTURE);
+		if (imgW_Hover_Circle)
+			imgW_Hover_Circle.LoadImageFromSet(0, VANILLA_MAP_MARKERS, "circle");
+		if (imgW_Hover_Point)
+			imgW_Hover_Point.LoadImageFromSet(0, VANILLA_MAP_MARKERS, "dot"); 
 	}
 
 	protected void UpdateScreenMetrics(){
@@ -279,6 +289,8 @@ class HMD_Symbology : Managed{
 		float right = screenCenterX + 330;
 
 		Place(imgW_FPV, screenCenterX, screenCenterY, 48, 48);
+		Place(imgW_Hover_Circle, screenCenterX, screenCenterY+200, 128, 128);
+		Place(imgW_Hover_Point, screenCenterX, screenCenterY+200, 192, 192);
 
 		Place(textW_Airspeed, left, screenCenterY - 10, 120, 40);
 		Place(textW_AirspeedLabel, left, screenCenterY - 38, 120, 22);
@@ -428,7 +440,7 @@ class HMD_Symbology : Managed{
 			textW_Warning.SetVisible(!warning.IsEmpty() && blinkOn);
 		}
 
-		UpdateWorldSymbology(velocity, forwardKt);
+		UpdateWorldSymbology(velocity, velocityLocal, forwardKt);
 		UpdateTargets(vehicle, heading, groundKt, timeSlice);
 	}
 	
@@ -454,7 +466,7 @@ class HMD_Symbology : Managed{
 		return string.Empty;
 	}
 
-	protected void UpdateWorldSymbology(vector velocity, float speedIAS){
+	protected void UpdateWorldSymbology(vector velocity, vector velocityLocal, float speedIAS){
 		CameraManager cameraManager = GetGame().GetCameraManager();
 		CameraBase camera;
 		if (cameraManager)
@@ -525,6 +537,31 @@ class HMD_Symbology : Managed{
 			}
 			imgW_FPV.SetVisible(visible);
 		}
+		bool hoverVisible = speedIAS < SPEED_FLIGHT_MODE;
+		if (imgW_Hover_Circle)
+			imgW_Hover_Circle.SetVisible(hoverVisible);
+
+		if (imgW_Hover_Point){
+			imgW_Hover_Point.SetVisible(hoverVisible);
+			if (hoverVisible){
+				float hoverCenterX = screenCenterX;
+				float hoverCenterY = screenCenterY + 200;
+				float pointSize = 192.0;
+				float maxOffset = 64.0; // Radius von Hover_Circle (128 / 2)
+
+				float dx = velocityLocal[0] * HOVER_DRIFT_PX_PER_MPS;
+				float dy = -velocityLocal[2] * HOVER_DRIFT_PX_PER_MPS;
+
+				float mag = Math.Sqrt(dx * dx + dy * dy);
+				if (mag > maxOffset && mag > 0.001){
+					float scale = maxOffset / mag;
+					dx *= scale;
+					dy *= scale;
+				}
+				FrameSlot.SetPos(imgW_Hover_Point, (hoverCenterX + dx) - pointSize * 0.5, (hoverCenterY + dy) - pointSize * 0.5);
+			}
+		}
+		
 	}
 
 	protected void UpdateTargets(notnull IEntity vehicle, float ownHeading, float groundKt, float timeSlice){

@@ -525,6 +525,18 @@ OverlayWidgetClass {
       ShadowColor 0 0 0 0.6
      }
     }
+    ImageWidgetClass "{6AF6BBCFB7694585}" {
+     Name "Hover_Circle"
+     Slot FrameWidgetSlot "{5752C476000000C4}" {
+     }
+     Color 0.35 1 0.45 1
+    }
+    ImageWidgetClass "{6AF6BBCFB921BD1B}" {
+     Name "Hover_Point"
+     Slot FrameWidgetSlot "{5752C476000000C4}" {
+     }
+     Color 0.35 1 0.45 1
+    }
    }
   }
  }
