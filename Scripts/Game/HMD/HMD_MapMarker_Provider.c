@@ -38,12 +38,6 @@ class HMD_MapMarker_Provider : HMD_TargetProvider{
 			CollectMarkerList(world, markerCfg, staticMarkers, localFactionId, ownPos, maxRangeSq, outTargets);
 		}
 
-		/*array<SCR_MapMarkerBase> dynamicMarkers = manager.GetDynamicMarkers();
-		if (dynamicMarkers){
-			totalChecked += dynamicMarkers.Count();
-			CollectMarkerList(world, markerCfg, dynamicMarkers, localFactionId, ownPos, maxRangeSq, outTargets);
-		}*/
-
 		int now = System.GetTickCount();
 		if (now >= s_iNextLogMs){
 			s_iNextLogMs = now + 5000;
@@ -88,8 +82,7 @@ class HMD_MapMarker_Provider : HMD_TargetProvider{
 	}
 
 	//------------------------------------------------------------------------------------------------
-	protected void ResolveMarkerVisuals(SCR_MapMarkerConfig markerCfg, notnull SCR_MapMarkerBase marker, notnull HMD_Target target)
-	{
+	protected void ResolveMarkerVisuals(SCR_MapMarkerConfig markerCfg, notnull SCR_MapMarkerBase marker, notnull HMD_Target target){
 		if (!markerCfg)
 			return;
 
@@ -99,12 +92,10 @@ class HMD_MapMarker_Provider : HMD_TargetProvider{
 
 		// Spielergesetzte Marker (Imageset + Quad + Farbauswahl)
 		SCR_MapMarkerEntryPlaced placedCfg = SCR_MapMarkerEntryPlaced.Cast(entryCfg);
-		if (placedCfg)
-		{
+		if (placedCfg){
 			ResourceName imageset, imagesetGlow;
 			string quadName;
-			if (placedCfg.GetIconEntry(marker.GetIconEntry(), imageset, imagesetGlow, quadName))
-			{
+			if (placedCfg.GetIconEntry(marker.GetIconEntry(), imageset, imagesetGlow, quadName)){
 				target.iconTexture = imageset;
 				target.iconQuad = quadName;
 			}

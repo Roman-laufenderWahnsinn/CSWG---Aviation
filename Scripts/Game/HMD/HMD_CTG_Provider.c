@@ -70,7 +70,9 @@ class HMD_CTG_Provider : HMD_TargetProvider{
 
 		string label = LabelFor(body);
 		Color color = ColorFor(body);
-
+		if (body.Points.Count() > 1)
+			return; // disable all mulit point bodies for now, see folowing:
+		/*
 		// Lines and routes: every vertex, numbered along the line
 		if (IsLineLike(body.Kind) && body.Points.Count() > 1){
 			int count = Math.Min(body.Points.Count(), MAX_LINE_VERTICES);
@@ -89,7 +91,7 @@ class HMD_CTG_Provider : HMD_TargetProvider{
 			centre = centre / body.Points.Count();
 			AddPoint(world, ownPos, centre, label, color, outTargets);
 			return;
-		}
+		}*/
 
 		// Everything else (symbols, points, task glyphs) sits on its first point
 		AddPoint(world, ownPos, body.Points[0], label, color, outTargets);
