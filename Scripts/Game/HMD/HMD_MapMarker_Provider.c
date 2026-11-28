@@ -32,27 +32,26 @@ class HMD_MapMarker_Provider : HMD_TargetProvider{
 
 		vector ownPos = vehicle.GetOrigin();
 		float maxRangeSq = MAX_RANGE_M * MAX_RANGE_M;
+		int before = outTargets.Count();
+		int staticCount = 0;
+		int disabledCount = 0;
 
 		array<SCR_MapMarkerBase> staticMarkers = manager.GetStaticMarkers();
-		if (staticMarkers && staticMarkers.Count() > 0){
-			m_aCachedTargets.Clear();
-			CollectMarkerList(world, markerCfg, staticMarkers, localFactionId, ownPos, maxRangeSq, m_aCachedTargets);
-			m_bHadMarkersBefore = true;
-		}else if (m_bHadMarkersBefore){
-			// ATAK hat staticMarkers beim Schließen geleert -> Cache mit aktueller Distanz weiter nutzen
-			foreach (HMD_Target cached : m_aCachedTargets){
-				if (!cached)
-					continue;
-				float dx = cached.vectorPosition[0] - ownPos[0];
-				float dz = cached.vectorPosition[2] - ownPos[2];
-				if (dx * dx + dz * dz <= maxRangeSq)
-					outTargets.Insert(cached);
-			}
-			return;
+		if (staticMarkers){
+			staticCount = staticMarkers.Count();
+			CollectMarkerList(world, markerCfg, staticMarkers, localFactionId, ownPos, maxRangeSq, outTargets);
 		}
 
-		foreach (HMD_Target target : m_aCachedTargets){
-			outTargets.Insert(target);
+		array<SCR_MapMarkerBase> disabledMarkers = manager.GetDisabledMarkers();
+		if (disabledMarkers){
+			disabledCount = disabledMarkers.Count();
+			CollectMarkerList(world, markerCfg, disabledMarkers, localFactionId, ownPos, maxRangeSq, outTargets);
+		}
+
+		int now = System.GetTickCount();
+		if (now >= s_iNextLogMs){
+			s_iNextLogMs = now + 5000;
+			Print(string.Format("[CSWG_HMD_MAP] static=%1 disabled=%2 reported=%3", staticCount, disabledCount, outTargets.Count() - before), LogLevel.NORMAL);
 		}
 	}
 
